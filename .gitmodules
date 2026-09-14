@@ -1,0 +1,3 @@
+[submodule "submodules/ws2812bc_hdl"]
+	path = submodules/ws2812bc_hdl
+	url = https://github.com/luriad/ws2812bc_hdl.git
