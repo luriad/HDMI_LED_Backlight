@@ -1,3 +1,6 @@
 [submodule "submodules/ws2812bc_hdl"]
 	path = submodules/ws2812bc_hdl
 	url = https://github.com/luriad/ws2812bc_hdl.git
+[submodule "submodules/PYNQ"]
+	path = submodules/PYNQ
+	url = https://github.com/Xilinx/PYNQ.git
