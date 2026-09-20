@@ -9,6 +9,8 @@ module multi_color_accumulate #(
     parameter INDEX_WIDTH = 10,
 
     parameter MAX_NUM_COLORS = 500,
+    parameter MAX_PIXELS_PER_COLOR = 1600,
+    parameter COUNT_WIDTH = $clog2(MAX_PIXELS_PER_COLOR+1),
 
     parameter COLOR_WIDTH = 8,
     parameter G_START_INDEX = 16,
@@ -48,7 +50,7 @@ module multi_color_accumulate #(
     input logic tready_b,
 
     // Register controls
-    input logic unsigned max_count
+    input logic unsigned [COUNT_WIDTH-1:0] max_count
 );
 
 logic [TDATA_WIDTH_OUT-1:0] tdata_g_fifo_in;
@@ -94,6 +96,8 @@ mca_pipeline #(
     .INDEX_WIDTH(INDEX_WIDTH),
 
     .MAX_NUM_COLORS(MAX_NUM_COLORS),
+    .MAX_PIXELS_PER_COLOR(MAX_PIXELS_PER_COLOR),
+    .COUNT_WIDTH(COUNT_WIDTH),
 
     .COLOR_WIDTH(COLOR_WIDTH),
     .G_START_INDEX(G_START_INDEX),

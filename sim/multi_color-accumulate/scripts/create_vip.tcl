@@ -18,7 +18,7 @@ create_ip -name axi4stream_vip -vendor xilinx.com -library ip -version 1.1 -modu
 set_property -dict [list \
   CONFIG.HAS_TLAST {1} \
   CONFIG.INTERFACE_MODE {SLAVE} \
-  CONFIG.TDATA_NUM_BYTES {32} \
+  CONFIG.TDATA_NUM_BYTES {4} \
   CONFIG.TDEST_WIDTH {0} \
   CONFIG.TID_WIDTH {0} \
   CONFIG.TUSER_WIDTH {10} \

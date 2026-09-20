@@ -24,6 +24,7 @@ localparam NUM_COLORS = 4;
 localparam COLOR_WIDTH = 8;
 localparam COLOR_HEIGHT = 2;
 localparam NUM_PIXELS_PER_COLOR = COLOR_WIDTH * COLOR_HEIGHT;
+localparam COUNT_WIDTH = $clog2(NUM_PIXELS_PER_COLOR+1);
 
 // Color data format
 localparam TDATA_WIDTH = 24;
@@ -43,19 +44,21 @@ logic [TDATA_WIDTH_IN-1:0] tdata_in;
 logic [INDEX_WIDTH-1:0] tuser_in;
 logic tvalid_in, tlast_in, tready_in;
 
-logic [TDATA_WIDTH_IN-1:0] tdata_g;
+logic [TDATA_WIDTH_OUT-1:0] tdata_g;
 logic [INDEX_WIDTH-1:0] tuser_g;
 logic tvalid_g, tlast_g, tready_g;
 
-logic [TDATA_WIDTH_IN-1:0] tdata_r;
+logic [TDATA_WIDTH_OUT-1:0] tdata_r;
 logic [INDEX_WIDTH-1:0] tuser_r;
 logic tvalid_r, tlast_r, tready_r;
 
-logic [TDATA_WIDTH_IN-1:0] tdata_b;
+logic [TDATA_WIDTH_OUT-1:0] tdata_b;
 logic [INDEX_WIDTH-1:0] tuser_b;
 logic tvalid_b, tlast_b, tready_b;
 
-logic unsigned max_count = NUM_PIXELS_PER_COLOR;
+logic unsigned [COUNT_WIDTH-1:0] max_count;
+
+assign max_count = unsigned'(NUM_PIXELS_PER_COLOR);
 
 // Simulate the clock
 always begin
@@ -151,6 +154,7 @@ multi_color_accumulate #(
     .INDEX_WIDTH(INDEX_WIDTH),
 
     .MAX_NUM_COLORS(NUM_COLORS),
+    .MAX_PIXELS_PER_COLOR(NUM_PIXELS_PER_COLOR),
 
     .COLOR_WIDTH(COLOR_DATA_WIDTH),
     .G_START_INDEX(G_START_INDEX),

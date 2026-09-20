@@ -9,6 +9,8 @@ module mca_pipeline #(
     parameter INDEX_WIDTH = 10,
 
     parameter MAX_NUM_COLORS = 500,
+    parameter MAX_PIXELS_PER_COLOR = 1600,
+    parameter COUNT_WIDTH = $clog2(MAX_PIXELS_PER_COLOR+1),
 
     parameter COLOR_WIDTH = 8,
     parameter G_START_INDEX = 16,
@@ -46,15 +48,22 @@ module mca_pipeline #(
     input logic tready_b,
 
     // Register controls
-    input logic unsigned max_count
+    input logic unsigned [COUNT_WIDTH-1:0] max_count
 );
 
-localparam COUNT_WIDTH = 11;
+localparam COUNT_RAM_WIDTH = $clog2(MAX_PIXELS_PER_COLOR); // count ram does not need to include last pixel, see if we can save a bit
 
+// RAMs
 logic unsigned [TDATA_WIDTH_OUT-1:0] g_sums [MAX_NUM_COLORS-1:0];
 logic unsigned [TDATA_WIDTH_OUT-1:0] r_sums [MAX_NUM_COLORS-1:0];
 logic unsigned [TDATA_WIDTH_OUT-1:0] b_sums [MAX_NUM_COLORS-1:0];
-logic unsigned [COUNT_WIDTH-1:0] all_color_counts [MAX_NUM_COLORS-1:0];
+logic unsigned [COUNT_RAM_WIDTH-1:0] all_color_counts [MAX_NUM_COLORS-1:0];
+
+// RAM init
+typedef enum logic {INIT, IDLE} ram_init_states;
+ram_init_states sm_vec;
+logic unsigned [INDEX_WIDTH-1:0] init_index;
+logic init_done;
 
 // Pipeline inputs
 logic unsigned [COLOR_WIDTH-1:0] g_0, g_1;
@@ -76,8 +85,8 @@ logic unsigned [TDATA_WIDTH_OUT-1:0] g_add, r_add, b_add;
 logic unsigned [COUNT_WIDTH-1:0] count_incr;
 
 // Assign AXI-S slave side
-assign tready_in = 1'b1;
-assign valid_0 = tvalid_in;
+assign tready_in = init_done;
+assign valid_0 = tvalid_in & init_done;
 assign last_0 = tlast_in;
 
 assign g_0 = tdata_in[G_START_INDEX+COLOR_WIDTH-1:G_START_INDEX];
@@ -123,20 +132,20 @@ always @(posedge aclk) begin
         valid_1 <= 'b0;
         last_1 <= 'b0;
     end
-    else if (valid_0 == 1'b1) begin
+    else begin
         g_1 <= g_0;
         r_1 <= r_0;
         b_1 <= b_0;
         index_1 <= index_0;
         valid_1 <= valid_0;
         last_1 <= last_0;
-        if (index_0 == index_1) begin
+        if (valid_1 == 1'b1 && index_0 == index_1) begin
             g_sum_1 <= g_add;
             r_sum_1 <= r_add;
             b_sum_1 <= b_add;
             count_1 <= count_incr;
         end 
-        else if (index_0 == index_2) begin
+        else if (valid_2 == 1'b1 && index_0 == index_2) begin
             g_sum_1 <= g_sum_2;
             r_sum_1 <= r_sum_2;
             b_sum_1 <= b_sum_2;
@@ -164,7 +173,7 @@ always @(posedge aclk) begin
         valid_2 <= 'b0;
         last_2 <= 'b0;
     end
-    else if (valid_1 == 1'b1) begin
+    else begin
         index_2 <= index_1;
 
         g_sum_2 <= g_add;
@@ -187,20 +196,67 @@ always @(posedge aclk) begin
         valid_3 <= 'b0;
         last_3 <= 'b0;
     end
-    else if (valid_2 == 1'b1) begin
+    else begin
         index_3 <= index_2;
         g_sum_3 <= g_sum_2;
         r_sum_3 <= r_sum_2;
         b_sum_3 <= b_sum_2;
-        valid_3 <= (count_2 == max_count - 1) || (last_2 == 1'b1);
+        valid_3 <= valid_2 == 1'b1 && ((count_2 == max_count) || (last_2 == 1'b1));
         last_3 <= last_2;
+    end
+end
+
+// RAM init state machine transitions
+always @(posedge aclk) begin
+    if (aresetn == 1'b0) begin
+        sm_vec <= INIT; 
+    end
+    else begin
+        case (sm_vec)
+            INIT: 
+                if (init_index == MAX_NUM_COLORS-1) begin
+                    sm_vec <= IDLE;
+                end
+                else begin
+                    sm_vec <= INIT;
+                end
+            IDLE:
+                sm_vec <= IDLE;
+            default: 
+                sm_vec <= INIT;
+        endcase
+    end
+end
+
+// RAM init state machine outputs
+always @(posedge aclk) begin
+    if (aresetn == 1'b0) begin
+        init_done <= 1'b0;
+        init_index <= 0;
+    end
+    else begin
+        case (sm_vec)
+            INIT: 
+                begin
+                    init_index <= init_index + 1;
+                    init_done <= init_index == MAX_NUM_COLORS-1;
+                end
+            IDLE:
+                init_done <= 1'b1;
+        endcase
     end
 end
 
 // Stage 3 RAM
 always @(posedge aclk) begin
-    if (valid_2 == 1'b1) begin
-        if (count_2 == max_count - 1) begin
+    if (init_done == 1'b0) begin
+        g_sums[init_index] <= 0;
+        r_sums[init_index] <= 0;
+        b_sums[init_index] <= 0;
+        all_color_counts[init_index] <= 0;
+    end
+    else if (valid_2 == 1'b1) begin
+        if (count_2 == max_count) begin
             g_sums[index_2] <= 0;
             r_sums[index_2] <= 0;
             b_sums[index_2] <= 0;
