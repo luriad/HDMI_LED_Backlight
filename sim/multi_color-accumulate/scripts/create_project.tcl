@@ -1,0 +1,1 @@
+create_project sim_multi_color_accumulate ./vivado_project -part xc7z020clg400-1

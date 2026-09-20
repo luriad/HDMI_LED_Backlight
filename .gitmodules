@@ -4,3 +4,6 @@
 [submodule "submodules/PYNQ"]
 	path = submodules/PYNQ
 	url = https://github.com/Xilinx/PYNQ.git
+[submodule "submodules/open-logic"]
+	path = submodules/open-logic
+	url = https://github.com/open-logic/open-logic.git

@@ -1,0 +1,6 @@
+examples/*/vivado_project
+sim/*/vivado_project
+vivado*.log
+vivado*.jou
+vivado*.str
+.Xil
