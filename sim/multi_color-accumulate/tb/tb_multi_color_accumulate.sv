@@ -105,7 +105,7 @@ axi4stream_vip_1 axis_vip_b (
 
 axi4stream_vip_0_mst_t  axi4stream_vip_0_mst;
 axi4stream_transaction wr_transaction;
-logic unsigned [7:0] data_mst [2:0];
+logic unsigned [7:0] data_mst [(TDATA_WIDTH_IN/8)-1:0];
 logic unsigned [TDATA_WIDTH_OUT-1:0] g_sum_mst [NUM_COLORS-1:0] = '{default:0};
 logic unsigned [TDATA_WIDTH_OUT-1:0] r_sum_mst [NUM_COLORS-1:0] = '{default:0};
 logic unsigned [TDATA_WIDTH_OUT-1:0] b_sum_mst [NUM_COLORS-1:0] = '{default:0};
@@ -145,8 +145,7 @@ end
 
 axi4stream_vip_1_slv_t  axi4stream_vip_1_slv_g;
 axi4stream_transaction rd_transaction_g;
-logic unsigned [9:0] idx_g;
-logic unsigned [7:0] data_slv_g [3:0];
+logic unsigned [7:0] data_slv_g [(TDATA_WIDTH_OUT/8)-1:0];
 logic unsigned [TDATA_WIDTH_OUT-1:0] g_sum_slv [NUM_COLORS-1:0] = '{default:0};
 initial begin : AXIS_Slave_g
     axi4stream_vip_1_slv_g = new("axi4stream_vip_1_slv_g", tb_multi_color_accumulator.axis_vip_g.inst.IF);
@@ -155,7 +154,6 @@ initial begin : AXIS_Slave_g
 
     for (int i = 0; i < NUM_COLORS; i++) begin
         axi4stream_vip_1_slv_g.monitor.item_collected_port.get(rd_transaction_g);
-        //idx_g = rd_transaction_g.get_user_beat();
         rd_transaction_g.get_data(data_slv_g);
         g_sum_slv[i][32:24] = data_slv_g[0];
         g_sum_slv[i][23:16] = data_slv_g[1];
@@ -164,15 +162,21 @@ initial begin : AXIS_Slave_g
     end
     for (int i = 0; i < NUM_COLORS; i++) begin
         $display("============================================");
-        $display("Green Sum for Color %d:\nMaster: %x\nSlave: %x", i, g_sum_mst[i], g_sum_slv[i]);
+        $display("Green Sum for Color %0d:\nMaster: %x\nSlave: %x", i, g_sum_mst[i], g_sum_slv[i]);
+        if (g_sum_mst[i] == g_sum_slv[i]) begin
+            $display("PASS");
+        end
+        else begin
+            $display("FAIL");
+            $stop;
+        end
         $display("============================================");
     end
 end
 
 axi4stream_vip_1_slv_t  axi4stream_vip_1_slv_r;
 axi4stream_transaction rd_transaction_r;
-logic unsigned [9:0] idx_r;
-logic unsigned [7:0] data_slv_r [3:0];
+logic unsigned [7:0] data_slv_r [(TDATA_WIDTH_OUT/8)-1:0];
 logic unsigned [TDATA_WIDTH_OUT-1:0] r_sum_slv [NUM_COLORS-1:0] = '{default:0};
 initial begin : AXIS_Slave_r
     axi4stream_vip_1_slv_r = new("axi4stream_vip_1_slv_r", tb_multi_color_accumulator.axis_vip_r.inst.IF);
@@ -181,7 +185,6 @@ initial begin : AXIS_Slave_r
 
     for (int i = 0; i < NUM_COLORS; i++) begin
         axi4stream_vip_1_slv_r.monitor.item_collected_port.get(rd_transaction_r);
-        //idx_r = rd_transaction_r.get_user_beat();
         rd_transaction_r.get_data(data_slv_r);
         r_sum_slv[i][32:24] = data_slv_r[0];
         r_sum_slv[i][23:16] = data_slv_r[1];
@@ -190,15 +193,21 @@ initial begin : AXIS_Slave_r
     end
     for (int i = 0; i < NUM_COLORS; i++) begin
         $display("============================================");
-        $display("Red Sum for Color %d:\nMaster: %x\nSlave: %x", i, r_sum_mst[i], r_sum_slv[i]);
+        $display("Red Sum for Color %0d:\nMaster: %x\nSlave: %x", i, r_sum_mst[i], r_sum_slv[i]);
+        if (r_sum_mst[i] == r_sum_slv[i]) begin
+            $display("PASS");
+        end
+        else begin
+            $display("FAIL");
+            $stop;
+        end
         $display("============================================");
     end
 end
 
 axi4stream_vip_1_slv_t  axi4stream_vip_1_slv_b;
 axi4stream_transaction rd_transaction_b;
-logic unsigned [9:0] idx_b;
-logic unsigned [7:0] data_slv_b [3:0];
+logic unsigned [7:0] data_slv_b [(TDATA_WIDTH_OUT/8)-1:0];
 logic unsigned [TDATA_WIDTH_OUT-1:0] b_sum_slv [NUM_COLORS-1:0] = '{default:0};
 initial begin : AXIS_Slave_b
     axi4stream_vip_1_slv_b = new("axi4stream_vip_1_slv_b", tb_multi_color_accumulator.axis_vip_b.inst.IF);
@@ -207,7 +216,6 @@ initial begin : AXIS_Slave_b
 
     for (int i = 0; i < NUM_COLORS; i++) begin
         axi4stream_vip_1_slv_b.monitor.item_collected_port.get(rd_transaction_b);
-        //idx_g = rd_transaction_g.get_user_beat();
         rd_transaction_b.get_data(data_slv_b);
         b_sum_slv[i][32:24] = data_slv_b[0];
         b_sum_slv[i][23:16] = data_slv_b[1];
@@ -216,7 +224,14 @@ initial begin : AXIS_Slave_b
     end
     for (int i = 0; i < NUM_COLORS; i++) begin
         $display("============================================");
-        $display("Blue Sum for Color %d:\nMaster: %x\nSlave: %x", i, b_sum_mst[i], b_sum_slv[i]);
+        $display("Blue Sum for Color %0d:\nMaster: %x\nSlave: %x", i, b_sum_mst[i], b_sum_slv[i]);
+        if (b_sum_mst[i] == b_sum_slv[i]) begin
+            $display("PASS");
+        end
+        else begin
+            $display("FAIL");
+            $stop;
+        end
         $display("============================================");
     end
 end
