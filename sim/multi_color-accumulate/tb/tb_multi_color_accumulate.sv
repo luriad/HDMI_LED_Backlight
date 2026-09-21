@@ -29,8 +29,8 @@ localparam COUNT_WIDTH = $clog2(NUM_PIXELS_PER_COLOR+1);
 // Color data format
 localparam TDATA_WIDTH = 24;
 localparam COLOR_DATA_WIDTH = 8;
-localparam R_START_INDEX = 2;
-localparam G_START_INDEX = 1;
+localparam G_START_INDEX = 16;
+localparam R_START_INDEX = 8;
 localparam B_START_INDEX = 0;
 
 // FIFO depth
@@ -104,24 +104,15 @@ axi4stream_vip_1 axis_vip_b (
 );
 
 axi4stream_vip_0_mst_t  axi4stream_vip_0_mst;
-axi4stream_vip_1_slv_t  axi4stream_vip_1_slv_g, axi4stream_vip_1_slv_r, axi4stream_vip_1_slv_b;
 axi4stream_transaction wr_transaction;
+logic unsigned [7:0] data_mst [2:0];
+logic unsigned [TDATA_WIDTH_OUT-1:0] g_sum_mst [NUM_COLORS-1:0] = '{default:0};
+logic unsigned [TDATA_WIDTH_OUT-1:0] r_sum_mst [NUM_COLORS-1:0] = '{default:0};
+logic unsigned [TDATA_WIDTH_OUT-1:0] b_sum_mst [NUM_COLORS-1:0] = '{default:0};
 initial begin : START_axi4stream_vip_0_MASTER
     axi4stream_vip_0_mst = new("axi4stream_vip_0_mst", tb_multi_color_accumulator.axis_vip_in.inst.IF);
     axi4stream_vip_0_mst.set_verbosity(400);
     axi4stream_vip_0_mst.start_master();
-
-    axi4stream_vip_1_slv_g = new("axi4stream_vip_1_slv_g", tb_multi_color_accumulator.axis_vip_g.inst.IF);
-    axi4stream_vip_1_slv_g.set_verbosity(400);
-    axi4stream_vip_1_slv_g.start_slave();
-
-    axi4stream_vip_1_slv_r = new("axi4stream_vip_1_slv_r", tb_multi_color_accumulator.axis_vip_r.inst.IF);
-    axi4stream_vip_1_slv_r.set_verbosity(400);
-    axi4stream_vip_1_slv_r.start_slave();
-
-    axi4stream_vip_1_slv_b = new("axi4stream_vip_1_slv_b", tb_multi_color_accumulator.axis_vip_b.inst.IF);
-    axi4stream_vip_1_slv_b.set_verbosity(400);
-    axi4stream_vip_1_slv_b.start_slave();
 
     #(20 * CLK_PERIOD);
     aresetn = 1'b1;
@@ -133,6 +124,10 @@ initial begin : START_axi4stream_vip_0_MASTER
         for (int j = 0; j < NUM_COLORS; j++) begin
             for(int i = 0; i < COLOR_WIDTH; i++) begin
                 WR_TRANSACTION_FAIL: assert(wr_transaction.randomize());
+                wr_transaction.get_data(data_mst);
+                g_sum_mst[j] += data_mst[0];
+                r_sum_mst[j] += data_mst[1];
+                b_sum_mst[j] += data_mst[2];
                 wr_transaction.set_delay(0);
                 wr_transaction.set_user_beat(j);
                 if(i == COLOR_WIDTH-1 && j == NUM_COLORS-1 && k == COLOR_HEIGHT-1) begin
@@ -145,6 +140,84 @@ initial begin : START_axi4stream_vip_0_MASTER
                 axi4stream_vip_0_mst.driver.send(wr_transaction);
             end
         end
+    end
+end
+
+axi4stream_vip_1_slv_t  axi4stream_vip_1_slv_g;
+axi4stream_transaction rd_transaction_g;
+logic unsigned [9:0] idx_g;
+logic unsigned [7:0] data_slv_g [3:0];
+logic unsigned [TDATA_WIDTH_OUT-1:0] g_sum_slv [NUM_COLORS-1:0] = '{default:0};
+initial begin : AXIS_Slave_g
+    axi4stream_vip_1_slv_g = new("axi4stream_vip_1_slv_g", tb_multi_color_accumulator.axis_vip_g.inst.IF);
+    axi4stream_vip_1_slv_g.set_verbosity(400);
+    axi4stream_vip_1_slv_g.start_slave();
+
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        axi4stream_vip_1_slv_g.monitor.item_collected_port.get(rd_transaction_g);
+        //idx_g = rd_transaction_g.get_user_beat();
+        rd_transaction_g.get_data(data_slv_g);
+        g_sum_slv[i][32:24] = data_slv_g[0];
+        g_sum_slv[i][23:16] = data_slv_g[1];
+        g_sum_slv[i][15:8] = data_slv_g[2];
+        g_sum_slv[i][7:0] = data_slv_g[3];
+    end
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        $display("============================================");
+        $display("Green Sum for Color %d:\nMaster: %x\nSlave: %x", i, g_sum_mst[i], g_sum_slv[i]);
+        $display("============================================");
+    end
+end
+
+axi4stream_vip_1_slv_t  axi4stream_vip_1_slv_r;
+axi4stream_transaction rd_transaction_r;
+logic unsigned [9:0] idx_r;
+logic unsigned [7:0] data_slv_r [3:0];
+logic unsigned [TDATA_WIDTH_OUT-1:0] r_sum_slv [NUM_COLORS-1:0] = '{default:0};
+initial begin : AXIS_Slave_r
+    axi4stream_vip_1_slv_r = new("axi4stream_vip_1_slv_r", tb_multi_color_accumulator.axis_vip_r.inst.IF);
+    axi4stream_vip_1_slv_r.set_verbosity(400);
+    axi4stream_vip_1_slv_r.start_slave();
+
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        axi4stream_vip_1_slv_r.monitor.item_collected_port.get(rd_transaction_r);
+        //idx_r = rd_transaction_r.get_user_beat();
+        rd_transaction_r.get_data(data_slv_r);
+        r_sum_slv[i][32:24] = data_slv_r[0];
+        r_sum_slv[i][23:16] = data_slv_r[1];
+        r_sum_slv[i][15:8] = data_slv_r[2];
+        r_sum_slv[i][7:0] = data_slv_r[3];
+    end
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        $display("============================================");
+        $display("Red Sum for Color %d:\nMaster: %x\nSlave: %x", i, r_sum_mst[i], r_sum_slv[i]);
+        $display("============================================");
+    end
+end
+
+axi4stream_vip_1_slv_t  axi4stream_vip_1_slv_b;
+axi4stream_transaction rd_transaction_b;
+logic unsigned [9:0] idx_b;
+logic unsigned [7:0] data_slv_b [3:0];
+logic unsigned [TDATA_WIDTH_OUT-1:0] b_sum_slv [NUM_COLORS-1:0] = '{default:0};
+initial begin : AXIS_Slave_b
+    axi4stream_vip_1_slv_b = new("axi4stream_vip_1_slv_b", tb_multi_color_accumulator.axis_vip_b.inst.IF);
+    axi4stream_vip_1_slv_b.set_verbosity(400);
+    axi4stream_vip_1_slv_b.start_slave();
+
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        axi4stream_vip_1_slv_b.monitor.item_collected_port.get(rd_transaction_b);
+        //idx_g = rd_transaction_g.get_user_beat();
+        rd_transaction_b.get_data(data_slv_b);
+        b_sum_slv[i][32:24] = data_slv_b[0];
+        b_sum_slv[i][23:16] = data_slv_b[1];
+        b_sum_slv[i][15:8] = data_slv_b[2];
+        b_sum_slv[i][7:0] = data_slv_b[3];
+    end
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        $display("============================================");
+        $display("Blue Sum for Color %d:\nMaster: %x\nSlave: %x", i, b_sum_mst[i], b_sum_slv[i]);
+        $display("============================================");
     end
 end
 
