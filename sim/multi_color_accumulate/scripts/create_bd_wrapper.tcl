@@ -1,0 +1,2 @@
+make_wrapper -files [get_files ./vivado_project/sim_multi_color_accumulate.srcs/sim_1/bd/tb_mca_bd/tb_mca_bd.bd] -top
+add_files -norecurse ./vivado_project/sim_multi_color_accumulate.gen/sim_1/bd/tb_mca_bd/hdl/tb_mca_bd_wrapper.v

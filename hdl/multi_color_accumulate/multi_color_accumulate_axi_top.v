@@ -97,7 +97,9 @@ module multi_color_accumulate_axi_top #
 	input wire  m_axis_divisor_tready
 );
 
-wire num_pixels_per_color;
+localparam COUNT_WIDTH = $clog2(C_MAX_PIXELS_PER_COLOR+1);
+
+wire [C_S00_AXI_DATA_WIDTH-1:0] num_pixels_per_color;
 
 // Instantiation of Axi Bus Interface S00_AXI
 multi_color_accumulate_slave_lite_v1_0_S00_AXI # ( 
@@ -136,13 +138,14 @@ multi_color_accumulate #(
 
     .MAX_NUM_COLORS(C_MAX_NUM_COLORS),
     .MAX_PIXELS_PER_COLOR(C_MAX_PIXELS_PER_COLOR),
+	.COUNT_WIDTH(COUNT_WIDTH),
 
-    .COLOR_WIDTH(COLOR_DATA_WIDTH),
-    .G_START_INDEX(G_START_INDEX),
-    .R_START_INDEX(R_START_INDEX),
-    .B_START_INDEX(B_START_INDEX),
+    .COLOR_WIDTH(C_COLOR_DATA_WIDTH),
+    .G_START_INDEX(C_G_START_INDEX),
+    .R_START_INDEX(C_R_START_INDEX),
+    .B_START_INDEX(C_B_START_INDEX),
 
-    .FIFO_DEPTH(FIFO_DEPTH)
+    .FIFO_DEPTH(C_FIFO_DEPTH)
 ) multi_color_accumulate_inst (
     // Clock and reset
     .aclk(axis_aclk),
@@ -177,7 +180,7 @@ multi_color_accumulate #(
     .tready_divisor(m_axis_divisor_tready),
 
     // Register controls
-    .max_count(num_pixels_per_color)
+    .max_count(num_pixels_per_color[COUNT_WIDTH-1:0])
 );
 	// User logic ends
 

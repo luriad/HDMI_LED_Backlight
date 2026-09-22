@@ -26,6 +26,7 @@ module multi_color_accumulate #(
     // Color in AXI stream
     input logic [TDATA_WIDTH_IN-1:0] tdata_in,
     input logic tvalid_in,
+    input logic [INDEX_WIDTH-1:0] tuser_in,
     input logic tlast_in,
     output logic tready_in,
 
