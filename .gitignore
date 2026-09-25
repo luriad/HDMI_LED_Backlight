@@ -4,3 +4,8 @@ vivado*.log
 vivado*.jou
 vivado*.str
 .Xil
+hls/color_indexer/.theia
+hls/color_indexer/.wsdata
+hls/color_indexer/color_indexer*
+hls/color_indexer/logs
+hls/color_indexer/scripts
