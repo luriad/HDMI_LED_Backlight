@@ -1,3 +1,8 @@
+##################################################################################################/
+## Description
+##################################################################################################/
+## Script for color indexer Vitis HLS flow
+##
 import vitis  # Import the Vitis library for High-Level Synthesis (HLS) functionalities
 import os     # Import the os module for interacting with the operating system
 import sys
@@ -38,7 +43,18 @@ class vitis_session:
         self.comp.run(operation='IMPLEMENTATION')
 
 if len(sys.argv) < 3:
-    sys.exit("Not enough args")
+    print("--USAGE--")
+    print("color_indexer.py [horiz or vert] -[flags]")
+    print("")
+    print("Flags:")
+    print("n: Create a new component (or use an existing one if this flag is absent)")
+    print("s: Run C Simulation")
+    print("y: Run Synthesis")
+    print("r: Run RTL/C Cosimulation")
+    print("p: Package IP")
+    print("i: Run implementation")
+    print("Note: The above order is the order steps are run regardless of the order flags are given.")
+    sys.exit()
 session = vitis_session(sys.argv[1])
 
 if ("n" in sys.argv[2]):

@@ -1,5 +1,5 @@
 # HDL
-Source code for the HDMI LED Backlight repo.
+HDL source code for the HDMI LED Backlight repo.
 
 ## Directories
 - `utilities`: Utility modules not a part of any particular module.

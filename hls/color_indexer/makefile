@@ -1,6 +1,27 @@
 VERTICAL=vert
 HORIZONTAL=horiz
 
+help:
+	$(info -- MAKE TARGETS --)
+	$(info setup_and_build_ip_all:   Sets up all Vitis components, synthesizes and packages the IPs, then exports them to the IP repo (../../ip_repo))
+	$(info setup_all:                Sets up all Vitis components and workspaces)
+	$(info build_ip_all:             For an existing Vitis components, synthesizes and packages the IPs, then exports them to the IP repo (../../ip_repo))
+	$(info clean_all:                Cleans all workspaces)
+	$(info setup_and_build_ip_horiz: Sets up the horizontal indexer Vitis component, synthesizes and packages the IP, then exports it to the IP repo (../../ip_repo))
+	$(info setup_horiz:              Sets up the horizontal indexer Vitis component and workspace)
+	$(info build_ip_horiz:           For an existing horizontal indexer Vitis component, synthesizes and packages the IP, then exports it to the IP repo (../../ip_repo))
+	$(info c_sim_horiz:              Runs C simulation for an existing horizontal indexer Vitis component)
+	$(info cosim_horiz:              Runs C/RTL cosimulation for an existing horizontal indexer Vitis component)
+	$(info open_gui_horiz:           Opens the Vitis GUI for an existing horizontal indexer workspace)
+	$(info clean_horiz:              Cleans the horizontal indexer workspace)
+	$(info setup_and_build_ip_vert:  Sets up the vertical indexer Vitis component, synthesizes and packages the IP, then exports it to the IP repo (../../ip_repo))
+	$(info setup_vert:               Sets up the vertical indexer Vitis component and workspace)
+	$(info build_ip_vert:            For an existing vertical indexer Vitis component, synthesizes and packages the IP, then exports it to the IP repo (../../ip_repo))
+	$(info c_sim_vert:               Runs C simulation for an existing vertical indexer Vitis component)
+	$(info cosim_vert:               Runs C/RTL cosimulation for an existing vertical indexer Vitis component)
+	$(info open_gui_vert:            Opens the Vitis GUI for an existing vertical indexer workspace)
+	$(info clean_vert:               Cleans the vertical indexer workspace)
+
 setup_and_build_ip_horiz:
 	vitis -s scripts/color_indexer.py ${HORIZONTAL} -nyp
 	rm -rf ../../ip_repo/color_indexer_${HORIZONTAL}/*
