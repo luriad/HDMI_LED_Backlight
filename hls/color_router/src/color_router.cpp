@@ -6,7 +6,7 @@
 #include "color_router.hpp"
 
 void color_coordinates(hls::stream<color>& color_in, hls::stream<bool>& last_in, 
-hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out,
+hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out, hls::stream<bool>& last_out,
 reg_settings& settings) {
     static xy_coordinates coords = {0,0};
     #pragma HLS PIPELINE II=1
@@ -17,6 +17,7 @@ reg_settings& settings) {
     bool last = last_in.read();
     color_out.write(c);
     coordinates_out.write(coords);
+    last_out.write(last);
     coords.x++;
     if (last) {
         coords.x = 0;
@@ -40,15 +41,16 @@ hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out, hls
     }
 }
 
-void coord_router(hls::stream<color>& color_in, hls::stream<xy_coordinates>& coordinates_in,
+void coord_router(hls::stream<color>& color_in, hls::stream<xy_coordinates>& coordinates_in, hls::stream<bool>& last_in,
 color_streams_dir& color_out, coord_streams_dir& coordinates_out, last_streams_dir& last_out,
-reg_settings& settings) {
+hls::stream<color>& color_passthrough, hls::stream<bool>& last_passthrough, reg_settings& settings) {
     #pragma HLS PIPELINE II=1
     if (color_in.empty() || coordinates_in.empty()) {
         return;
     }
     color c = color_in.read();
     xy_coordinates coord = coordinates_in.read();
+    bool last = last_in.read();
     bool last_top = false;
     bool last_bottom = false;
     bool last_left = false;
@@ -58,6 +60,8 @@ reg_settings& settings) {
     route(c, coord, settings.bottom_bounds, color_out.bottom, coordinates_out.bottom, last_out.bottom);
     route(c, coord, settings.left_bounds, color_out.left, coordinates_out.left, last_out.left);
     route(c, coord, settings.right_bounds, color_out.right, coordinates_out.right, last_out.right);
+    color_passthrough.write(c);
+    last_passthrough.write(last);
 }
 
 void depackage_axis(hls::stream<wide_color_axis>& axis_in, 
@@ -85,13 +89,26 @@ hls::stream<color_coord_axis>& axis_out) {
     axis_out.write(pkt_out);
 }
 
-void color_router(hls::stream<wide_color_axis>& axis_in, axis_streams_dir& axis_out, reg_settings& settings) {
+void package_axis_passthrough(hls::stream<color>& color_in, hls::stream<bool>& last_in, hls::stream<wide_color_axis>& axis_out) {
+    #pragma HLS PIPELINE II=1
+    wide_color_axis pkt_out;
+    if (color_in.empty() || last_in.empty()) {
+        return;
+    }
+    pkt_out.data = color_in.read();
+    pkt_out.last = last_in.read();
+    axis_out.write(pkt_out);
+}
+
+void color_router(hls::stream<wide_color_axis>& axis_in, axis_streams_dir& axis_out, hls::stream<wide_color_axis>& axis_passthrough, 
+reg_settings& settings) {
     #pragma HLS DISAGGREGATE variable=axis_out
     #pragma HLS INTERFACE mode=axis port=axis_in
     #pragma HLS INTERFACE mode=axis port=axis_out.top
     #pragma HLS INTERFACE mode=axis port=axis_out.bottom
     #pragma HLS INTERFACE mode=axis port=axis_out.left
     #pragma HLS INTERFACE mode=axis port=axis_out.right
+    #pragma HLS INTERFACE mode=axis port=axis_passthrough
 
     #pragma HLS DISAGGREGATE variable=settings
     #pragma HLS DISAGGREGATE variable=settings.resolution
@@ -127,9 +144,9 @@ void color_router(hls::stream<wide_color_axis>& axis_in, axis_streams_dir& axis_
     #pragma HLS INTERFACE mode=s_axilite port=settings.right_bounds.y.upper
     #pragma HLS INTERFACE mode=s_axilite port=settings.right_bounds.y.lower
 
-    hls::stream<color> color_in, color_coord_to_router;
+    hls::stream<color> color_in, color_coord_to_router, color_passthrough;
     hls::stream<xy_coordinates> coord_coord_to_router;
-    hls::stream<bool> last_in;
+    hls::stream<bool> last_in, last_coord_to_router, last_passthrough;
     color_streams_dir color_out;
     coord_streams_dir coord_out;
     last_streams_dir last_out;
@@ -137,11 +154,12 @@ void color_router(hls::stream<wide_color_axis>& axis_in, axis_streams_dir& axis_
     #pragma HLS DATAFLOW
     depackage_axis(axis_in, color_in, last_in);
 
-    color_coordinates(color_in, last_in, color_coord_to_router, coord_coord_to_router, settings);
-    coord_router(color_coord_to_router, coord_coord_to_router, color_out, coord_out, last_out, settings);
+    color_coordinates(color_in, last_in, color_coord_to_router, coord_coord_to_router, last_coord_to_router, settings);
+    coord_router(color_coord_to_router, coord_coord_to_router, last_coord_to_router, color_out, coord_out, last_out, color_passthrough, last_passthrough, settings);
 
     package_axis(color_out.top, coord_out.top, last_out.top, axis_out.top);
     package_axis(color_out.bottom, coord_out.bottom, last_out.bottom, axis_out.bottom);
     package_axis(color_out.left, coord_out.left, last_out.left, axis_out.left);
     package_axis(color_out.right, coord_out.right, last_out.right, axis_out.right);
+    package_axis_passthrough(color_passthrough, last_passthrough, axis_passthrough);
 }

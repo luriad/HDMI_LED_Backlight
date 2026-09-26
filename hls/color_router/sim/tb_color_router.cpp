@@ -22,8 +22,10 @@ void tb_color_router_output(hls::stream<color_coord_axis>& axis_out, std::string
 }
 
 void tb_color_router_driver(int num_frames, reg_settings& settings) {
-    hls::stream<wide_color_axis> axis_in;
+    hls::stream<wide_color_axis> axis_in, axis_passthrough;
     axis_streams_dir axis_out;
+    bool last = false;
+    static int i = 0;
 
     for (int f = 0; f < num_frames; f++) {
         bool last = false;
@@ -34,13 +36,21 @@ void tb_color_router_driver(int num_frames, reg_settings& settings) {
                 pkt_in.data = x+y;
                 pkt_in.last = x == settings.resolution.x-1 && y == settings.resolution.y-1;
                 axis_in.write(pkt_in);
-                color_router(axis_in, axis_out, settings);
+                color_router(axis_in, axis_out, axis_passthrough, settings);
             }
         }
         tb_color_router_output(axis_out.top, "top");       
         tb_color_router_output(axis_out.bottom, "bottom"); 
         tb_color_router_output(axis_out.left, "left"); 
         tb_color_router_output(axis_out.right, "right"); 
+        printf("==> Group passthrough\n");
+        while(!last) {
+            while (axis_passthrough.empty());
+            wide_color_axis pkt_out = axis_passthrough.read();
+            color c = pkt_out.data;
+            last = pkt_out.last;
+            printf("Packet %d: Color = %d, last = %d\n", i++, c.to_int(), last);
+        }
     }
 }
 
