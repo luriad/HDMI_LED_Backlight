@@ -6,5 +6,7 @@ vivado*.str
 .Xil
 hls/*/vitis/*/*
 hls/*/logs
-hs/*/.wsdata
+hls/*/.wsdata
 ip_repo/color_indexer*/*
+ip_repo/color_router/*
+top/vivado_project/*

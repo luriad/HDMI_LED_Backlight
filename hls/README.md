@@ -3,12 +3,14 @@ High-level synthesis source code and build environments for the HDMI LED Backlig
 
 ## Directories
 - `color_indexer`: Color grouping indexer
+- `color_router`: Color data routing to screen edges
+- `include`: Global includes for all HLS components
 
 ## How to build
-Each directory contains a makefile. Run 'make' in the directory to see the build options. The first listed option builds all components
+Each subdirectory contains a makefile. Run 'make' in the directory to see the build options. The first listed option builds all components
 
 ## Sub-directory structure
-Each subdirectory contains one or more HLS components. Each subdirectory has the following structure
+Each subdirectory, other than include, contains one or more HLS components. Each subdirectory has the following structure
 
 - `config`: HLS config files
 - `scripts`: HLS flow scripts
