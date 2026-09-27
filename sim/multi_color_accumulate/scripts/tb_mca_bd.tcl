@@ -108,7 +108,7 @@ if { ${design_name} eq "" } {
 
    common::send_gid_msg -ssname BD::TCL -id 2003 -severity "INFO" "Currently there is no design <$design_name> in project, so creating one..."
 
-   create_bd_design $design_name
+   create_bd_design -srcset sim_1 $design_name
 
    common::send_gid_msg -ssname BD::TCL -id 2004 -severity "INFO" "Making design <$design_name> as current_bd_design."
    current_bd_design $design_name
@@ -234,9 +234,9 @@ proc create_root_design { parentCell } {
   set_property CONFIG.INTERFACE_MODE {SLAVE} $axis_vip_b
 
 
-  # Create instance: axis_vip_div, and set properties
-  set axis_vip_div [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi4stream_vip:1.1 axis_vip_div ]
-  set_property CONFIG.INTERFACE_MODE {SLAVE} $axis_vip_div
+  # Create instance: axis_vip_div_g, and set properties
+  set axis_vip_div_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi4stream_vip:1.1 axis_vip_div_g ]
+  set_property CONFIG.INTERFACE_MODE {SLAVE} $axis_vip_div_g
 
 
   # Create instance: axi_vip_0, and set properties
@@ -254,18 +254,30 @@ proc create_root_design { parentCell } {
   ] $axi_vip_0
 
 
+  # Create instance: axis_vip_div_r, and set properties
+  set axis_vip_div_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi4stream_vip:1.1 axis_vip_div_r ]
+  set_property CONFIG.INTERFACE_MODE {SLAVE} $axis_vip_div_r
+
+
+  # Create instance: axis_vip_div_b, and set properties
+  set axis_vip_div_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi4stream_vip:1.1 axis_vip_div_b ]
+  set_property CONFIG.INTERFACE_MODE {SLAVE} $axis_vip_div_b
+
+
   # Create interface connections
+  connect_bd_intf_net -intf_net DUT_M_AXIS_DIV_B [get_bd_intf_pins DUT/M_AXIS_DIV_B] [get_bd_intf_pins axis_vip_div_b/S_AXIS]
+  connect_bd_intf_net -intf_net DUT_M_AXIS_DIV_R [get_bd_intf_pins DUT/M_AXIS_DIV_R] [get_bd_intf_pins axis_vip_div_r/S_AXIS]
+  connect_bd_intf_net -intf_net DUT_M_AXIS_G [get_bd_intf_pins DUT/M_AXIS_G] [get_bd_intf_pins axis_vip_g/S_AXIS]
+  connect_bd_intf_net -intf_net DUT_M_AXIS_R [get_bd_intf_pins DUT/M_AXIS_R] [get_bd_intf_pins axis_vip_r/S_AXIS]
+  connect_bd_intf_net -intf_net DUT_M_AXS_DIV_G [get_bd_intf_pins DUT/M_AXS_DIV_G] [get_bd_intf_pins axis_vip_div_g/S_AXIS]
   connect_bd_intf_net -intf_net axi4stream_vip_0_M_AXIS [get_bd_intf_pins axis_vip_in/M_AXIS] [get_bd_intf_pins DUT/S_AXIS_IN]
   connect_bd_intf_net -intf_net axi_vip_0_M_AXI [get_bd_intf_pins axi_vip_0/M_AXI] [get_bd_intf_pins DUT/S00_AXI]
   connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_B [get_bd_intf_pins axis_vip_b/S_AXIS] [get_bd_intf_pins DUT/M_AXIS_B]
-  connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_DIV [get_bd_intf_pins axis_vip_div/S_AXIS] [get_bd_intf_pins DUT/M_AXIS_DIV]
-  connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_G [get_bd_intf_pins axis_vip_g/S_AXIS] [get_bd_intf_pins DUT/M_AXIS_G]
-  connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_R [get_bd_intf_pins axis_vip_r/S_AXIS] [get_bd_intf_pins DUT/M_AXIS_R]
 
   # Create port connections
   connect_bd_net -net control_resetn_1 [get_bd_ports control_resetn] [get_bd_pins axi_vip_0/aresetn] [get_bd_pins DUT/s00_axi_aresetn]
-  connect_bd_net -net datapath_resetn_1 [get_bd_ports datapath_resetn] [get_bd_pins axis_vip_in/aresetn] [get_bd_pins axis_vip_g/aresetn] [get_bd_pins axis_vip_r/aresetn] [get_bd_pins axis_vip_b/aresetn] [get_bd_pins axis_vip_div/aresetn] [get_bd_pins DUT/axis_aresetn]
-  connect_bd_net -net tb_clk_1 [get_bd_ports tb_clk] [get_bd_pins axi_vip_0/aclk] [get_bd_pins axis_vip_in/aclk] [get_bd_pins axis_vip_g/aclk] [get_bd_pins axis_vip_r/aclk] [get_bd_pins axis_vip_b/aclk] [get_bd_pins axis_vip_div/aclk] [get_bd_pins DUT/s00_axi_aclk] [get_bd_pins DUT/axis_aclk]
+  connect_bd_net -net datapath_resetn_1 [get_bd_ports datapath_resetn] [get_bd_pins axis_vip_in/aresetn] [get_bd_pins axis_vip_g/aresetn] [get_bd_pins DUT/axis_aresetn] [get_bd_pins axis_vip_r/aresetn] [get_bd_pins axis_vip_b/aresetn] [get_bd_pins axis_vip_div_g/aresetn] [get_bd_pins axis_vip_div_r/aresetn] [get_bd_pins axis_vip_div_b/aresetn]
+  connect_bd_net -net tb_clk_1 [get_bd_ports tb_clk] [get_bd_pins axi_vip_0/aclk] [get_bd_pins axis_vip_in/aclk] [get_bd_pins DUT/s00_axi_aclk] [get_bd_pins DUT/axis_aclk] [get_bd_pins axis_vip_g/aclk] [get_bd_pins axis_vip_r/aclk] [get_bd_pins axis_vip_b/aclk] [get_bd_pins axis_vip_div_g/aclk] [get_bd_pins axis_vip_div_r/aclk] [get_bd_pins axis_vip_div_b/aclk]
 
   # Create address segments
   assign_bd_address -offset 0x44A00000 -range 0x00010000 -target_address_space [get_bd_addr_spaces axi_vip_0/Master_AXI] [get_bd_addr_segs DUT/S00_AXI/S00_AXI_reg] -force

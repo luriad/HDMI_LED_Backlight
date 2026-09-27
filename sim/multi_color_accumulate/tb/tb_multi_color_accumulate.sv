@@ -12,7 +12,9 @@ import tb_mca_bd_axis_vip_in_0_pkg::*;
 import tb_mca_bd_axis_vip_g_0_pkg::*;
 import tb_mca_bd_axis_vip_r_0_pkg::*;
 import tb_mca_bd_axis_vip_b_0_pkg::*;
-import tb_mca_bd_axis_vip_div_0_pkg::*;
+import tb_mca_bd_axis_vip_div_g_0_pkg::*;
+import tb_mca_bd_axis_vip_div_r_0_pkg::*;
+import tb_mca_bd_axis_vip_div_b_0_pkg::*;
 module tb_multi_color_accumulate();
 
 // Clock parameters
@@ -22,6 +24,7 @@ localparam HALF_PERIOD = CLK_PERIOD / 2;
 
 localparam TDATA_WIDTH_IN = 24;
 localparam TDATA_WIDTH_OUT = 32;
+localparam TDATA_DIV_WIDTH_OUT = 16;
 localparam AXILITE_DATA_WIDTH = 32;
 
 localparam NUM_COLORS = 4;
@@ -195,27 +198,83 @@ initial begin : AXIS_Slave_b
     end
 end
 
-tb_mca_bd_axis_vip_div_0_slv_t  axi4stream_vip_1_slv_div;
-axi4stream_transaction rd_transaction_div;
-logic unsigned [7:0] data_slv_div [(TDATA_WIDTH_OUT/8)-1:0];
-logic unsigned [TDATA_WIDTH_OUT-1:0] div_sum_slv [NUM_COLORS-1:0] = '{default:0};
-initial begin : AXIS_Slave_div
-    axi4stream_vip_1_slv_div = new("axi4stream_vip_1_slv_div", tb_multi_color_accumulate.bd.tb_mca_bd_i.axis_vip_div.inst.IF);
-    axi4stream_vip_1_slv_div.set_verbosity(400);
-    axi4stream_vip_1_slv_div.start_slave();
+tb_mca_bd_axis_vip_div_g_0_slv_t  axi4stream_vip_1_slv_div_g;
+axi4stream_transaction rd_transaction_div_g;
+logic unsigned [7:0] data_slv_div_g [(TDATA_DIV_WIDTH_OUT/8)-1:0];
+logic unsigned [TDATA_DIV_WIDTH_OUT-1:0] div_g_sum_slv [NUM_COLORS-1:0] = '{default:0};
+initial begin : AXIS_Slave_div_g
+    axi4stream_vip_1_slv_div_g = new("axi4stream_vip_1_slv_div_g", tb_multi_color_accumulate.bd.tb_mca_bd_i.axis_vip_div_g.inst.IF);
+    axi4stream_vip_1_slv_div_g.set_verbosity(400);
+    axi4stream_vip_1_slv_div_g.start_slave();
 
     for (int i = 0; i < NUM_COLORS; i++) begin
-        axi4stream_vip_1_slv_div.monitor.item_collected_port.get(rd_transaction_div);
-        rd_transaction_div.get_data(data_slv_div);
-        div_sum_slv[i][31:24] = data_slv_div[0];
-        div_sum_slv[i][23:16] = data_slv_div[1];
-        div_sum_slv[i][15:8] = data_slv_div[2];
-        div_sum_slv[i][7:0] = data_slv_div[3];
+        axi4stream_vip_1_slv_div_g.monitor.item_collected_port.get(rd_transaction_div_g);
+        rd_transaction_div_g.get_data(data_slv_div_g);
+        div_g_sum_slv[i][15:8] = data_slv_div_g[0];
+        div_g_sum_slv[i][7:0] = data_slv_div_g[1];
     end
     for (int i = 0; i < NUM_COLORS; i++) begin
         $display("============================================");
-        $display("Divisor for Color %0d:\nReal: %x\nSlave: %x", i, NUM_PIXELS_PER_COLOR, div_sum_slv[i]);
-        if (NUM_PIXELS_PER_COLOR == div_sum_slv[i]) begin
+        $display("Green Divisor for Color %0d:\nReal: %x\nSlave: %x", i, NUM_PIXELS_PER_COLOR, div_g_sum_slv[i]);
+        if (NUM_PIXELS_PER_COLOR == div_g_sum_slv[i]) begin
+            $display("PASS");
+        end
+        else begin
+            $display("FAIL");
+            $stop;
+        end
+        $display("============================================");
+    end
+end
+
+tb_mca_bd_axis_vip_div_r_0_slv_t  axi4stream_vip_1_slv_div_r;
+axi4stream_transaction rd_transaction_div_r;
+logic unsigned [7:0] data_slv_div_r [(TDATA_DIV_WIDTH_OUT/8)-1:0];
+logic unsigned [TDATA_DIV_WIDTH_OUT-1:0] div_r_sum_slv [NUM_COLORS-1:0] = '{default:0};
+initial begin : AXIS_Slave_div_r
+    axi4stream_vip_1_slv_div_r = new("axi4stream_vip_1_slv_div_r", tb_multi_color_accumulate.bd.tb_mca_bd_i.axis_vip_div_r.inst.IF);
+    axi4stream_vip_1_slv_div_r.set_verbosity(400);
+    axi4stream_vip_1_slv_div_r.start_slave();
+
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        axi4stream_vip_1_slv_div_r.monitor.item_collected_port.get(rd_transaction_div_r);
+        rd_transaction_div_r.get_data(data_slv_div_r);
+        div_r_sum_slv[i][15:8] = data_slv_div_r[0];
+        div_r_sum_slv[i][7:0] = data_slv_div_r[1];
+    end
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        $display("============================================");
+        $display("Red Divisor for Color %0d:\nReal: %x\nSlave: %x", i, NUM_PIXELS_PER_COLOR, div_r_sum_slv[i]);
+        if (NUM_PIXELS_PER_COLOR == div_r_sum_slv[i]) begin
+            $display("PASS");
+        end
+        else begin
+            $display("FAIL");
+            $stop;
+        end
+        $display("============================================");
+    end
+end
+
+tb_mca_bd_axis_vip_div_b_0_slv_t  axi4stream_vip_1_slv_div_b;
+axi4stream_transaction rd_transaction_div_b;
+logic unsigned [7:0] data_slv_div_b [(TDATA_DIV_WIDTH_OUT/8)-1:0];
+logic unsigned [TDATA_DIV_WIDTH_OUT-1:0] div_b_sum_slv [NUM_COLORS-1:0] = '{default:0};
+initial begin : AXIS_Slave_div_b
+    axi4stream_vip_1_slv_div_b = new("axi4stream_vip_1_slv_div_b", tb_multi_color_accumulate.bd.tb_mca_bd_i.axis_vip_div_b.inst.IF);
+    axi4stream_vip_1_slv_div_b.set_verbosity(400);
+    axi4stream_vip_1_slv_div_b.start_slave();
+
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        axi4stream_vip_1_slv_div_b.monitor.item_collected_port.get(rd_transaction_div_b);
+        rd_transaction_div_b.get_data(data_slv_div_b);
+        div_b_sum_slv[i][15:8] = data_slv_div_b[0];
+        div_b_sum_slv[i][7:0] = data_slv_div_b[1];
+    end
+    for (int i = 0; i < NUM_COLORS; i++) begin
+        $display("============================================");
+        $display("Divisor for Color %0d:\nReal: %x\nSlave: %x", i, NUM_PIXELS_PER_COLOR, div_b_sum_slv[i]);
+        if (NUM_PIXELS_PER_COLOR == div_b_sum_slv[i]) begin
             $display("PASS");
         end
         else begin
