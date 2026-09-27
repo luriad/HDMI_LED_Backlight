@@ -18,7 +18,7 @@ setup(
         'pynq'
     ],
     entry_points={
-        'pynq.overlays': ['overlay = BacklightOverlay.overlays']
+        'pynq.overlays': ['overlay = HDMI_LED_Backlight.overlays']
     },
     cmdclass={'build_py': build_py},
     description = "Overlay for HDMI LED Backlight repo"
