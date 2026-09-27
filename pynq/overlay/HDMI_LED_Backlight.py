@@ -27,6 +27,8 @@ class BacklightOverlay(pynq.Overlay):
           HDMI input and output interfaces
      audio : pynq.lib.audio.Audio
           Headphone jack and on-board microphone
+     LED_Driver : HDMI_LED_Backlight
+          Driver of WS2812C LEDs through PMODA
 
      """
 
