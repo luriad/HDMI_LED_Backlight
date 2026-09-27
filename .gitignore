@@ -10,3 +10,6 @@ hls/*/.wsdata
 ip_repo/color_indexer*/*
 ip_repo/color_router/*
 top/vivado_project/*
+top/NA
+*.bit
+*.hwh

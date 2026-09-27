@@ -1,0 +1,2 @@
+file copy -force vivado_project/HDMI_LED_Backlight.runs/impl_1/HDMI_LED_Backlight_bd_wrapper.bit ../pynq/overlay/HDMI_LED_Backlight_bd_wrapper.bit
+file copy -force vivado_project/HDMI_LED_Backlight.gen/sources_1/bd/HDMI_LED_Backlight_bd/hw_handoff/HDMI_LED_Backlight_bd.hwh ../pynq/overlay/HDMI_LED_Backlight_bd.hwh

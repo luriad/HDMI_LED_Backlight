@@ -1,0 +1,2 @@
+make_wrapper -files [get_files ./vivado_project/HDMI_LED_Backlight.srcs/sources_1/bd/HDMI_LED_Backlight_bd/HDMI_LED_Backlight_bd.bd] -top
+add_files -norecurse ./vivado_project/HDMI_LED_Backlight.gen/sources_1/bd/HDMI_LED_Backlight_bd/hdl/HDMI_LED_Backlight_bd_wrapper.v

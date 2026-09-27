@@ -1,0 +1,1 @@
+create_project HDMI_LED_Backlight ./vivado_project -part xc7z020clg400-1
