@@ -6,6 +6,7 @@
 module mca_pipeline #(
     parameter TDATA_WIDTH_IN = 24,
     parameter TDATA_WIDTH_OUT = 32,
+    parameter DIV_WIDTH_OUT = 16,
     parameter INDEX_WIDTH = 10,
 
     parameter MAX_NUM_COLORS = 500,
@@ -44,7 +45,7 @@ module mca_pipeline #(
     output logic tlast_b,
     input logic tready_b,
 
-    output logic [TDATA_WIDTH_OUT-1:0] tdata_divisor,
+    output logic [DIV_WIDTH_OUT-1:0] tdata_divisor,
     output logic tvalid_divisor,
     output logic tlast_divisor,
     input logic tready_divisor,

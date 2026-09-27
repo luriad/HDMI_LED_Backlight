@@ -6,6 +6,7 @@
 module multi_color_accumulate #(
     parameter TDATA_WIDTH_IN = 24,
     parameter TDATA_WIDTH_OUT = 32,
+    parameter DIV_WIDTH_OUT = 16,
     parameter INDEX_WIDTH = 10,
 
     parameter MAX_NUM_COLORS = 500,
@@ -36,20 +37,30 @@ module multi_color_accumulate #(
     output logic tlast_g,
     input logic tready_g,
 
+    output logic [DIV_WIDTH_OUT-1:0] tdata_divisor_g,
+    output logic tvalid_divisor_g,
+    output logic tlast_divisor_g,
+    input logic tready_divisor_g,
+
     output logic [TDATA_WIDTH_OUT-1:0] tdata_r,
     output logic tvalid_r,
     output logic tlast_r,
     input logic tready_r,
+
+    output logic [DIV_WIDTH_OUT-1:0] tdata_divisor_r,
+    output logic tvalid_divisor_r,
+    output logic tlast_divisor_r,
+    input logic tready_divisor_r,
 
     output logic [TDATA_WIDTH_OUT-1:0] tdata_b,
     output logic tvalid_b,
     output logic tlast_b,
     input logic tready_b,
 
-    output logic [TDATA_WIDTH_OUT-1:0] tdata_divisor,
-    output logic tvalid_divisor,
-    output logic tlast_divisor,
-    input logic tready_divisor,
+    output logic [DIV_WIDTH_OUT-1:0] tdata_divisor_b,
+    output logic tvalid_divisor_b,
+    output logic tlast_divisor_b,
+    input logic tready_divisor_b,
 
     // Register controls
     input logic unsigned [COUNT_WIDTH-1:0] max_count
@@ -79,6 +90,10 @@ logic [TDATA_WIDTH_OUT:0] fifo_data_out_g, fifo_data_out_r, fifo_data_out_b;
 
 logic fifo_data_in_divisor, fifo_data_out_divisor;
 
+logic [DIV_WIDTH_OUT-1:0] tdata_divisor;
+logic tvalid_divisor;
+logic tready_divisor;
+
 assign fifo_data_in_g = {tlast_g_fifo_in, tdata_g_fifo_in};
 assign fifo_data_in_r = {tlast_r_fifo_in, tdata_r_fifo_in};
 assign fifo_data_in_b = {tlast_b_fifo_in, tdata_b_fifo_in};
@@ -93,7 +108,19 @@ assign tdata_r = fifo_data_out_r[TDATA_WIDTH_OUT-1:0];
 assign tlast_b = fifo_data_out_b[TDATA_WIDTH_OUT];
 assign tdata_b = fifo_data_out_b[TDATA_WIDTH_OUT-1:0];
 
-assign tlast_divisor = fifo_data_out_divisor;
+assign tdata_divisor_g = tdata_divisor;
+assign tdata_divisor_r = tdata_divisor;
+assign tdata_divisor_b = tdata_divisor;
+
+assign tvalid_divisor_g = tvalid_divisor;
+assign tvalid_divisor_r = tvalid_divisor;
+assign tvalid_divisor_b = tvalid_divisor;
+
+assign tlast_divisor_g = fifo_data_out_divisor;
+assign tlast_divisor_r = fifo_data_out_divisor;
+assign tlast_divisor_b = fifo_data_out_divisor;
+
+assign tready_divisor = tready_divisor_g & tready_divisor_b & tready_divisor_b;
 
 mca_pipeline #(
     .TDATA_WIDTH_IN(TDATA_WIDTH_IN),

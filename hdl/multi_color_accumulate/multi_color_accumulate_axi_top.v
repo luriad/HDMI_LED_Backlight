@@ -18,6 +18,7 @@ module multi_color_accumulate_axi_top #
 	parameter integer C_R_START_INDEX = 8,
 	parameter integer C_B_START_INDEX = 0,
 	parameter integer C_FIFO_DEPTH = C_MAX_NUM_COLORS,
+	parameter integer C_DIV_WIDTH_OUT = 16,
 	// Do not modify the parameters beyond this line
 
 
@@ -76,28 +77,34 @@ module multi_color_accumulate_axi_top #
 	output wire  m_axis_g_tvalid,
 	output wire [C_M_AXIS_TDATA_WIDTH-1 : 0] m_axis_g_tdata,
 	output wire  m_axis_g_tlast,
-	input wire  m_axis_g_tready,
+
+	// Ports of Axi Master Bus Interface M_AXIS_DIVISOR_G
+	output wire  m_axis_divisor_g_tvalid,
+	output wire [C_DIV_WIDTH_OUT-1 : 0] m_axis_divisor_g_tdata,
+	output wire  m_axis_divisor_g_tlast,
 
 	// Ports of Axi Master Bus Interface M_AXIS_R
 	output wire  m_axis_r_tvalid,
 	output wire [C_M_AXIS_TDATA_WIDTH-1 : 0] m_axis_r_tdata,
 	output wire  m_axis_r_tlast,
-	input wire  m_axis_r_tready,
+
+	// Ports of Axi Master Bus Interface M_AXIS_DIVISOR_R
+	output wire  m_axis_divisor_r_tvalid,
+	output wire [C_DIV_WIDTH_OUT-1 : 0] m_axis_divisor_r_tdata,
+	output wire  m_axis_divisor_r_tlast,
 
 	// Ports of Axi Master Bus Interface M_AXIS_B
 	output wire  m_axis_b_tvalid,
 	output wire [C_M_AXIS_TDATA_WIDTH-1 : 0] m_axis_b_tdata,
 	output wire  m_axis_b_tlast,
-	input wire  m_axis_b_tready,
 
-	// Ports of Axi Master Bus Interface M_AXIS_DIVISOR
-	output wire  m_axis_divisor_tvalid,
-	output wire [C_M_AXIS_TDATA_WIDTH-1 : 0] m_axis_divisor_tdata,
-	output wire  m_axis_divisor_tlast,
-	input wire  m_axis_divisor_tready
+	// Ports of Axi Master Bus Interface M_AXIS_DIVISOR_B
+	output wire  m_axis_divisor_b_tvalid,
+	output wire [C_DIV_WIDTH_OUT-1 : 0] m_axis_divisor_b_tdata,
+	output wire  m_axis_divisor_b_tlast
 );
 
-localparam COUNT_WIDTH = $clog2(C_MAX_PIXELS_PER_COLOR+1);
+localparam integer C_COUNT_WIDTH = $clog2(C_MAX_PIXELS_PER_COLOR+1);
 
 wire [C_S00_AXI_DATA_WIDTH-1:0] num_pixels_per_color;
 
@@ -138,7 +145,7 @@ multi_color_accumulate #(
 
     .MAX_NUM_COLORS(C_MAX_NUM_COLORS),
     .MAX_PIXELS_PER_COLOR(C_MAX_PIXELS_PER_COLOR),
-	.COUNT_WIDTH(COUNT_WIDTH),
+	.COUNT_WIDTH(C_COUNT_WIDTH),
 
     .COLOR_WIDTH(C_COLOR_DATA_WIDTH),
     .G_START_INDEX(C_G_START_INDEX),
@@ -162,25 +169,35 @@ multi_color_accumulate #(
     .tdata_g(m_axis_g_tdata),
     .tvalid_g(m_axis_g_tvalid),
     .tlast_g(m_axis_g_tlast),
-    .tready_g(m_axis_g_tready),
+    .tready_g(1'b1),
+
+	.tdata_divisor_g(m_axis_divisor_g_tdata),
+    .tvalid_divisor_g(m_axis_divisor_g_tvalid),
+    .tlast_divisor_g(m_axis_divisor_g_tlast),
+    .tready_divisor_g(1'b1),
 
     .tdata_r(m_axis_r_tdata),
     .tvalid_r(m_axis_r_tvalid),
     .tlast_r(m_axis_r_tlast),
-    .tready_r(m_axis_r_tready),
+    .tready_r(1'b1),
+
+	.tdata_divisor_r(m_axis_divisor_r_tdata),
+    .tvalid_divisor_r(m_axis_divisor_r_tvalid),
+    .tlast_divisor_r(m_axis_divisor_r_tlast),
+    .tready_divisor_r(1'b1),
 
     .tdata_b(m_axis_b_tdata),
     .tvalid_b(m_axis_b_tvalid),
     .tlast_b(m_axis_b_tlast),
-    .tready_b(m_axis_b_tready),
+    .tready_b(1'b1),
 
-	.tdata_divisor(m_axis_divisor_tdata),
-    .tvalid_divisor(m_axis_divisor_tvalid),
-    .tlast_divisor(m_axis_divisor_tlast),
-    .tready_divisor(m_axis_divisor_tready),
+	.tdata_divisor_b(m_axis_divisor_b_tdata),
+    .tvalid_divisor_b(m_axis_divisor_b_tvalid),
+    .tlast_divisor_b(m_axis_divisor_b_tlast),
+    .tready_divisor_b(1'b1),
 
     // Register controls
-    .max_count(num_pixels_per_color[COUNT_WIDTH-1:0])
+    .max_count(num_pixels_per_color[C_COUNT_WIDTH-1:0])
 );
 	// User logic ends
 
