@@ -54,26 +54,26 @@ class BacklightOverlay(pynq.Overlay):
                self.bounds = {"top":[[0,0],[0,0]], "bottom":[[0,0],[0,0]], "left":[[0,0],[0,0]], "right":[[0,0],[0,0]]}
                self.interval = {"top":0, "bottom":0, "left":0, "right":0}
 
-     def resolution():
+     def get_resolution(self):
           return self.resolution
 
-     def resolution(new_resolution):
+     def set_resolution(self, new_resolution):
           if (len(new_resolution) != 2):
                raise ValueError("Wrong number of elements in resolution specification")
           self.resolution = new_resolution
-          self.LED_Driver.color_router_0.resolution(new_resolution)
+          self.LED_Driver.color_router_0.set_resolution(new_resolution)
 
-     def num_ws_leds():
+     def get_num_ws_leds(self):
           return num_ws_leds
 
-     def num_ws_leds(new_nums):
-          for key, value in new_nums:
-               if key != "top" or key != "bottom" or key != "left" or key != "right":
+     def set_num_ws_leds(self, new_nums):
+          for key, value in new_nums.items():
+               if key != "top" and key != "bottom" and key != "left" and key != "right":
                     raise ValueError(f"Wrong side name: {key}")
                self.num_ws_leds[key] = value
 
-     def calc_bounds():
-          for key, num_leds in self.num_ws_leds:
+     def calc_bounds(self):
+          for key, num_leds in self.num_ws_leds.items():
                interval = 0
                res = 0
                if key == "top" or key == "bottom":
@@ -96,24 +96,19 @@ class BacklightOverlay(pynq.Overlay):
                     self.bounds[key] = [[res[1]-box_height, res[1]-1],[left_pos, right_pos]]
                self.interval[key] = interval
 
-          self.LED_DRIVER.color_router_0.bounds(self.bounds)
+          self.LED_Driver.color_router_0.set_bounds(self.bounds)
 
-          self.LED_DRIVER.color_indexer_top.bounds(self.bounds["top"])
-          self.LED_DRIVER.color_indexer_bottom.bounds(self.bounds["bottom"])
-          self.LED_DRIVER.color_indexer_vert_left.bounds(self.bounds["left"])
-          self.LED_DRIVER.color_indexer_vert_right.bounds(self.bounds["right"])
+          self.LED_Driver.color_indexer_top.set_bounds(self.bounds["top"])
+          self.LED_Driver.color_indexer_bottom.set_bounds(self.bounds["bottom"])
+          self.LED_Driver.color_indexer_vert_left.set_bounds(self.bounds["left"])
+          self.LED_Driver.color_indexer_vert_right.set_bounds(self.bounds["right"])
 
-          self.LED_DRIVER.color_indexer_top.interval(self.interval["top"])
-          self.LED_DRIVER.color_indexer_bottom.interval(self.interval["bottom"])
-          self.LED_DRIVER.color_indexer_vert_left.interval(self.interval["left"])
-          self.LED_DRIVER.color_indexer_vert_right.interval(self.interval["right"])
+          self.LED_Driver.color_indexer_top.set_interval(self.interval["top"])
+          self.LED_Driver.color_indexer_bottom.set_interval(self.interval["bottom"])
+          self.LED_Driver.color_indexer_vert_left.set_interval(self.interval["left"])
+          self.LED_Driver.color_indexer_vert_right.set_interval(self.interval["right"])
 
-          self.LED_DRIVER.multi_color_acc_top.max_count(self.interval["top"]**2)
-          self.LED_DRIVER.multi_color_acc_bottom.max_count(self.interval["bottom"]**2)
-          self.LED_DRIVER.multi_color_acc_left.max_count(self.interval["left"]**2)
-          self.LED_DRIVER.multi_color_acc_right.max_count(self.interval["right"]**2)
-
-
-
-
-
+          self.LED_Driver.multi_color_acc_top.set_max_count(self.interval["top"]**2)
+          self.LED_Driver.multi_color_acc_bottom.set_max_count(self.interval["bottom"]**2)
+          self.LED_Driver.multi_color_acc_left.set_max_count(self.interval["left"]**2)
+          self.LED_Driver.multi_color_acc_right.set_max_count(self.interval["right"]**2)

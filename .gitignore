@@ -18,3 +18,5 @@ top/NA
 *.bit
 *.hwh
 __pycache__/
+pynq/dist
+pynq/*.egg-info

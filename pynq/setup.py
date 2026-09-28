@@ -1,6 +1,5 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from pynq.utils import build_py
-import HDMI_LED_Backlight
 
 setup(
     name = "HDMI_LED_Backlight",
@@ -9,7 +8,8 @@ setup(
     license = 'GPL-3.0',
     author = "David Luria",
     author_email = "dluria13@gmail.com",
-    packages = ['pynq'],
+    packages = ['HDMI_LED_Backlight'],
+    package_data =  {'HDMI_LED_Backlight': ['*.bit', '*.hwh']},
     inlcude_package_data=True,
     install_requires=[
         'pynq'
@@ -18,7 +18,7 @@ setup(
         'pynq'
     ],
     entry_points={
-        'pynq.overlays': ['overlay = HDMI_LED_Backlight.overlays']
+        'pynq.overlays': ['HDMI_LED_Backlight = HDMI_LED_Backlight']
     },
     cmdclass={'build_py': build_py},
     description = "Overlay for HDMI LED Backlight repo"
