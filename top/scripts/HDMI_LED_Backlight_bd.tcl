@@ -715,32 +715,44 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: multi_color_acc_top, and set properties
   set multi_color_acc_top [ create_bd_cell -type ip -vlnv user.org:HDMI_LED_Backlight:multi_color_accumulate:1.0 multi_color_acc_top ]
   set_property -dict [list \
+    CONFIG.C_B_START_INDEX {16} \
     CONFIG.C_FIFO_DEPTH {256} \
+    CONFIG.C_G_START_INDEX {8} \
     CONFIG.C_M_AXIS_TDATA_WIDTH {24} \
+    CONFIG.C_R_START_INDEX {0} \
   ] $multi_color_acc_top
 
 
   # Create instance: multi_color_acc_bottom, and set properties
   set multi_color_acc_bottom [ create_bd_cell -type ip -vlnv user.org:HDMI_LED_Backlight:multi_color_accumulate:1.0 multi_color_acc_bottom ]
   set_property -dict [list \
+    CONFIG.C_B_START_INDEX {16} \
     CONFIG.C_FIFO_DEPTH {256} \
+    CONFIG.C_G_START_INDEX {8} \
     CONFIG.C_M_AXIS_TDATA_WIDTH {24} \
+    CONFIG.C_R_START_INDEX {0} \
   ] $multi_color_acc_bottom
 
 
   # Create instance: multi_color_acc_left, and set properties
   set multi_color_acc_left [ create_bd_cell -type ip -vlnv user.org:HDMI_LED_Backlight:multi_color_accumulate:1.0 multi_color_acc_left ]
   set_property -dict [list \
+    CONFIG.C_B_START_INDEX {16} \
     CONFIG.C_FIFO_DEPTH {256} \
+    CONFIG.C_G_START_INDEX {8} \
     CONFIG.C_M_AXIS_TDATA_WIDTH {24} \
+    CONFIG.C_R_START_INDEX {0} \
   ] $multi_color_acc_left
 
 
   # Create instance: multi_color_acc_right, and set properties
   set multi_color_acc_right [ create_bd_cell -type ip -vlnv user.org:HDMI_LED_Backlight:multi_color_accumulate:1.0 multi_color_acc_right ]
   set_property -dict [list \
+    CONFIG.C_B_START_INDEX {16} \
     CONFIG.C_FIFO_DEPTH {256} \
+    CONFIG.C_G_START_INDEX {8} \
     CONFIG.C_M_AXIS_TDATA_WIDTH {24} \
+    CONFIG.C_R_START_INDEX {0} \
   ] $multi_color_acc_right
 
 
