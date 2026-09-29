@@ -20,3 +20,4 @@ top/NA
 __pycache__/
 pynq/dist
 pynq/*.egg-info
+*.tar.gz
