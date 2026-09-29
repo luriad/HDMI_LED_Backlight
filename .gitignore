@@ -21,3 +21,5 @@ __pycache__/
 pynq/dist
 pynq/*.egg-info
 *.tar.gz
+
+.ipynb_checkpoints

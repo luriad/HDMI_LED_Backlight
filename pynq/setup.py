@@ -9,7 +9,10 @@ setup(
     author = "David Luria",
     author_email = "dluria13@gmail.com",
     packages = ['HDMI_LED_Backlight'],
-    package_data =  {'HDMI_LED_Backlight': ['*.bit', '*.hwh']},
+    package_data =  {
+        'HDMI_LED_Backlight': ['*.bit', '*.hwh'], 
+        'HDMI_LED_Backlight.notebooks': ['*.ipynb']
+    },
     inlcude_package_data=True,
     install_requires=[
         'pynq'
@@ -18,7 +21,8 @@ setup(
         'pynq'
     ],
     entry_points={
-        'pynq.overlays': ['HDMI_LED_Backlight = HDMI_LED_Backlight']
+        'pynq.overlays': ['HDMI_LED_Backlight = HDMI_LED_Backlight'],
+        'pynq.notebooks': ['HDMI_LED_Backlight = HDMI_LED_Backlight.notebooks']
     },
     cmdclass={'build_py': build_py},
     description = "Overlay for HDMI LED Backlight repo"
