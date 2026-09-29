@@ -1,1 +1,1 @@
-recursive-include HDMI_LED_Backlight *.bit *.hwh
+recursive-include HDMI_LED_Backlight *.bit *.hwh *.ipynb

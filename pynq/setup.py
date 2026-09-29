@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 from pynq.utils import build_py
 
 setup(
@@ -8,7 +8,7 @@ setup(
     license = 'GPL-3.0',
     author = "David Luria",
     author_email = "dluria13@gmail.com",
-    packages = ['HDMI_LED_Backlight'],
+    packages = find_namespace_packages(),
     package_data =  {
         'HDMI_LED_Backlight': ['*.bit', '*.hwh'], 
         'HDMI_LED_Backlight.notebooks': ['*.ipynb']

@@ -19,7 +19,7 @@ top/NA
 *.hwh
 __pycache__/
 pynq/dist
-pynq/*.egg-info
+*.egg-info
 *.tar.gz
 
 .ipynb_checkpoints
