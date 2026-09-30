@@ -102,6 +102,7 @@ void package_axis_passthrough(hls::stream<color>& color_in, hls::stream<bool>& l
 
 void color_router(hls::stream<wide_color_axis>& axis_in, axis_streams_dir& axis_out, hls::stream<wide_color_axis>& axis_passthrough, 
 reg_settings& settings) {
+    #pragma HLS INTERFACE mode=ap_ctrl_none port=return
     #pragma HLS DISAGGREGATE variable=axis_out
     #pragma HLS INTERFACE mode=axis port=axis_in
     #pragma HLS INTERFACE mode=axis port=axis_out.top

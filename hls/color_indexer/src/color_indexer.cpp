@@ -71,6 +71,7 @@ hls::stream<color_index_axis>& axis_out) {
 }
 
 void color_indexer(hls::stream<color_coord_axis>& axis_in, hls::stream<color_index_axis>& axis_out, reg_settings& settings) {
+    #pragma HLS INTERFACE mode=ap_ctrl_none port=return
     #pragma HLS INTERFACE mode=axis port=axis_in
     #pragma HLS INTERFACE mode=axis port=axis_out
 

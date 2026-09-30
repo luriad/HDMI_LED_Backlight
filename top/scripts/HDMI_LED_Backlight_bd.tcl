@@ -144,7 +144,6 @@ user.org:HDMI_LED_Backlight:multi_color_accumulate:1.0\
 xilinx.com:ip:div_gen:5.1\
 xilinx.com:ip:axis_combiner:1.1\
 user.org:ws2812bc_hdl:axis_to_ws2812c:1.0\
-xilinx.com:ip:xlconstant:1.1\
 xilinx.com:ip:axis_register_slice:1.1\
 xilinx.com:hls:color_convert:1.0\
 xilinx.com:hls:pixel_pack:1.0\
@@ -1029,9 +1028,6 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   ] $axi_interconnect_0
 
 
-  # Create instance: xlconstant_0, and set properties
-  set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0 ]
-
   # Create interface connections
   connect_bd_intf_net -intf_net Conn1 [get_bd_intf_pins axi_interconnect_0/S00_AXI] [get_bd_intf_pins S00_AXI]
   connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI [get_bd_intf_pins color_router_0/s_axi_control] [get_bd_intf_pins axi_interconnect_0/M00_AXI]
@@ -1104,7 +1100,6 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   connect_bd_net -net axis_to_ws2812c_2_Dout [get_bd_pins axis_to_ws2812c_bottom/Dout] [get_bd_pins WS2812C_Dout_bottom]
   connect_bd_net -net axis_to_ws2812c_3_Dout [get_bd_pins axis_to_ws2812c_right/Dout] [get_bd_pins WS2812C_Dout_right]
   connect_bd_net -net interconnect_aresetn_1 [get_bd_pins interconnect_aresetn_142M] [get_bd_pins axi_interconnect_0/M00_ARESETN] [get_bd_pins axi_interconnect_0/M01_ARESETN] [get_bd_pins axi_interconnect_0/M02_ARESETN] [get_bd_pins axi_interconnect_0/M03_ARESETN] [get_bd_pins axi_interconnect_0/M04_ARESETN] [get_bd_pins axi_interconnect_0/M05_ARESETN] [get_bd_pins axi_interconnect_0/M06_ARESETN] [get_bd_pins axi_interconnect_0/M07_ARESETN] [get_bd_pins axi_interconnect_0/M08_ARESETN]
-  connect_bd_net -net xlconstant_0_dout [get_bd_pins xlconstant_0/dout] [get_bd_pins color_router_0/ap_start] [get_bd_pins color_indexer_vert_right/ap_start] [get_bd_pins color_indexer_bottom/ap_start] [get_bd_pins color_indexer_top/ap_start] [get_bd_pins color_indexer_vert_left/ap_start]
 
   # Restore current instance
   current_bd_instance $oldCurInst
