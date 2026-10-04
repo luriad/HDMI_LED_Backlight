@@ -2,7 +2,6 @@ import pynq
 from pynq import GPIO
 import pynq.lib
 import pynq.lib.video
-import pynq.lib.audio
 import math
 
 class BacklightOverlay(pynq.Overlay):
@@ -25,19 +24,16 @@ class BacklightOverlay(pynq.Overlay):
           Wrapper for GPIO for LD4 and LD5 multicolour LEDs
      video : pynq.lib.video.HDMIWrapper
           HDMI input and output interfaces
-     audio : pynq.lib.audio.Audio
-          Headphone jack and on-board microphone
      LED_Driver : HDMI_LED_Backlight
           Driver of WS2812C LEDs through PMODA
 
      """
 
-     def __init__(self, bitfile, **kwargs):
-          super().__init__(bitfile, **kwargs)
+     def __init__(self, bitfile, download=True):
+          super().__init__(bitfile, download=download)
           if self.is_loaded():
-               self.audio = self.audio_codec_ctrl_0
-               self.audio.configure()
-
+               pixel_in = overlay.video.hdmi_in.pixel_pack
+               pixel_in.bits_per_pixel = 32
                self.leds = self.leds_gpio.channel1
                self.switches = self.switches_gpio.channel1
                self.buttons = self.btns_gpio.channel1

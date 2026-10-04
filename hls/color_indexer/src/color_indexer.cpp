@@ -10,7 +10,7 @@ void color_index_calc(hls::stream<color>& color_in, hls::stream<xy_coordinates>&
 hls::stream<color>& color_out, hls::stream<color_index>& index_out, hls::stream<bool>& last_out,
 reg_settings& settings) {
     static color_index idx = 0;
-    static coordinate target = VERTICAL ? settings.bounds.y.lower+settings.interval-1 : settings.bounds.x.lower+settings.interval-1;
+    static coordinate target = 0;
     #pragma HLS PIPELINE II=1
     if (color_in.empty() || coordinates_in.empty() || last_in.empty()) {
         return;
