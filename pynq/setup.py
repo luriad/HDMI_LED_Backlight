@@ -22,7 +22,8 @@ setup(
     ],
     entry_points={
         'pynq.overlays': ['HDMI_LED_Backlight = HDMI_LED_Backlight'],
-        'pynq.notebooks': ['HDMI_LED_Backlight = HDMI_LED_Backlight.notebooks']
+        'pynq.notebooks': ['HDMI_LED_Backlight = HDMI_LED_Backlight.notebooks'],
+        "console_scripts": ["pynq-hlbt = hlbt.hlbt:main"],
     },
     cmdclass={'build_py': build_py},
     description = "Overlay for HDMI LED Backlight repo"
