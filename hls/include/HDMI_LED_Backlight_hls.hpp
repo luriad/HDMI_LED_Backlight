@@ -11,7 +11,7 @@
 typedef ap_uint<32> color_wide;
 typedef ap_uint<24> color;
 typedef ap_uint<10> color_index;
-typedef hls::axis<color_wide> wide_color_axis;
+typedef hls::axis<color_wide, 1> wide_color_axis;
 typedef hls::axis<color, 22> color_coord_axis;
 typedef hls::axis<color, 10> color_index_axis;
 

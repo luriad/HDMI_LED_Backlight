@@ -169,32 +169,26 @@ multi_color_accumulate #(
     .tdata_g(m_axis_g_tdata),
     .tvalid_g(m_axis_g_tvalid),
     .tlast_g(m_axis_g_tlast),
-    .tready_g(1'b1),
 
 	.tdata_divisor_g(m_axis_divisor_g_tdata),
     .tvalid_divisor_g(m_axis_divisor_g_tvalid),
     .tlast_divisor_g(m_axis_divisor_g_tlast),
-    .tready_divisor_g(1'b1),
 
     .tdata_r(m_axis_r_tdata),
     .tvalid_r(m_axis_r_tvalid),
     .tlast_r(m_axis_r_tlast),
-    .tready_r(1'b1),
 
 	.tdata_divisor_r(m_axis_divisor_r_tdata),
     .tvalid_divisor_r(m_axis_divisor_r_tvalid),
     .tlast_divisor_r(m_axis_divisor_r_tlast),
-    .tready_divisor_r(1'b1),
 
     .tdata_b(m_axis_b_tdata),
     .tvalid_b(m_axis_b_tvalid),
     .tlast_b(m_axis_b_tlast),
-    .tready_b(1'b1),
 
 	.tdata_divisor_b(m_axis_divisor_b_tdata),
     .tvalid_divisor_b(m_axis_divisor_b_tvalid),
     .tlast_divisor_b(m_axis_divisor_b_tlast),
-    .tready_divisor_b(1'b1),
 
     // Register controls
     .max_count(num_pixels_per_color[C_COUNT_WIDTH-1:0])

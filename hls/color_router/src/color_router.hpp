@@ -6,7 +6,6 @@
 #include "../../include/HDMI_LED_Backlight_hls.hpp"
 
 struct reg_settings {
-    xy_coordinates resolution;
     xy_bounds top_bounds;
     xy_bounds bottom_bounds;
     xy_bounds left_bounds;

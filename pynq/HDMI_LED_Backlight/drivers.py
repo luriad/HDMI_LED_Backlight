@@ -6,15 +6,6 @@ class color_router(DefaultIP):
         super().__init__(description)
         self.bounds = {"top":[[0,0],[0,0]], "bottom":[[0,0],[0,0]], "left":[[0,0],[0,0]], "right":[[0,0],[0,0]]}
 
-    def get_resolution(self):
-        return [self.register_map.settings_resolution_x, self.register_map.settings_resolution_y]
-    
-    def set_resolution(self, new_resolution):
-        if (len(new_resolution) != 2):
-            raise ValueError("Wrong number of elements in resolution specification")
-        self.register_map.settings_resolution_x = new_resolution[0]
-        self.register_map.settings_resolution_y = new_resolution[1]
-
     def get_bounds(self):
         return self.bounds
 

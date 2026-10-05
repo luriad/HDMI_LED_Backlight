@@ -5,9 +5,8 @@
 //
 #include "color_router.hpp"
 
-void color_coordinates(hls::stream<color>& color_in, hls::stream<bool>& last_in, 
-hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out,
-reg_settings& settings) {
+void color_coordinates(hls::stream<color>& color_in, hls::stream<bool>& last_in, hls::stream<bool>& sof_in,
+hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out) {
     static xy_coordinates coords = {0,0};
     #pragma HLS PIPELINE II=1
     if (color_in.empty() || last_in.empty()) {
@@ -15,15 +14,18 @@ reg_settings& settings) {
     }
     color c = color_in.read();
     bool last = last_in.read();
-    color_out.write(c);
-    coordinates_out.write(coords);
-    coords.x++;
-    if (last && coords.y == settings.resolution.y) {
+    bool sof = sof_in.read();
+    if (sof) {
         coords.x = 0;
         coords.y = 0;
-    } else if (last) {
+    }
+    color_out.write(c);
+    coordinates_out.write(coords);
+    if (last) {
         coords.x = 0;
         coords.y++;
+    } else {
+        coords.x++;
     }
 }
 
@@ -58,7 +60,7 @@ color_streams_dir& color_out, coord_streams_dir& coordinates_out, last_streams_d
 }
 
 void depackage_axis(hls::stream<wide_color_axis>& axis_in, 
-hls::stream<color>& color_out,  hls::stream<bool>& last_out) {
+hls::stream<color>& color_out,  hls::stream<bool>& last_out, hls::stream<bool>& sof_out) {
     #pragma HLS PIPELINE II=1
     if (axis_in.empty()){
         return;
@@ -66,6 +68,7 @@ hls::stream<color>& color_out,  hls::stream<bool>& last_out) {
     wide_color_axis pkt_in = axis_in.read();
     color_out.write(pkt_in.data);
     last_out.write(pkt_in.last);
+    sof_out.write(pkt_in.user);
 }
 
 void package_axis(hls::stream<color>& color_in, hls::stream<xy_coordinates>& coordinates_in, hls::stream<bool>& last_in,
@@ -93,7 +96,6 @@ reg_settings& settings) {
     #pragma HLS INTERFACE mode=axis port=axis_out.right
 
     #pragma HLS DISAGGREGATE variable=settings
-    #pragma HLS DISAGGREGATE variable=settings.resolution
     #pragma HLS DISAGGREGATE variable=settings.top_bounds
     #pragma HLS DISAGGREGATE variable=settings.top_bounds.x
     #pragma HLS DISAGGREGATE variable=settings.top_bounds.y
@@ -107,8 +109,6 @@ reg_settings& settings) {
     #pragma HLS DISAGGREGATE variable=settings.right_bounds.x
     #pragma HLS DISAGGREGATE variable=settings.right_bounds.y
 
-    #pragma HLS INTERFACE mode=s_axilite port=settings.resolution.x
-    #pragma HLS INTERFACE mode=s_axilite port=settings.resolution.y
     #pragma HLS INTERFACE mode=s_axilite port=settings.top_bounds.x.upper
     #pragma HLS INTERFACE mode=s_axilite port=settings.top_bounds.x.lower
     #pragma HLS INTERFACE mode=s_axilite port=settings.top_bounds.y.upper
@@ -128,15 +128,15 @@ reg_settings& settings) {
 
     hls::stream<color> color_in, color_coord_to_router;
     hls::stream<xy_coordinates> coord_coord_to_router;
-    hls::stream<bool> last_in;
+    hls::stream<bool> last_in, sof_in;
     color_streams_dir color_out;
     coord_streams_dir coord_out;
     last_streams_dir last_out;
 
     #pragma HLS DATAFLOW
-    depackage_axis(axis_in, color_in, last_in);
+    depackage_axis(axis_in, color_in, last_in, sof_in);
 
-    color_coordinates(color_in, last_in, color_coord_to_router, coord_coord_to_router, settings);
+    color_coordinates(color_in, last_in, sof_in, color_coord_to_router, coord_coord_to_router);
     coord_router(color_coord_to_router, coord_coord_to_router, color_out, coord_out, last_out, settings);
 
     package_axis(color_out.top, coord_out.top, last_out.top, axis_out.top);

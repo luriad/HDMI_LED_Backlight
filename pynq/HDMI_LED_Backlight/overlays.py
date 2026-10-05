@@ -32,8 +32,6 @@ class BacklightOverlay(pynq.Overlay):
      def __init__(self, bitfile, download=True):
           super().__init__(bitfile, download=download)
           if self.is_loaded():
-               pixel_in = overlay.video.hdmi_in.pixel_pack
-               pixel_in.bits_per_pixel = 32
                self.leds = self.leds_gpio.channel1
                self.switches = self.switches_gpio.channel1
                self.buttons = self.btns_gpio.channel1
@@ -57,7 +55,6 @@ class BacklightOverlay(pynq.Overlay):
           if (len(new_resolution) != 2):
                raise ValueError("Wrong number of elements in resolution specification")
           self.resolution = new_resolution
-          self.LED_Driver.color_router_0.set_resolution(new_resolution)
 
      def get_num_ws_leds(self):
           return num_ws_leds
@@ -108,3 +105,5 @@ class BacklightOverlay(pynq.Overlay):
           self.LED_Driver.multi_color_acc_bottom.set_max_count(self.interval["bottom"]**2)
           self.LED_Driver.multi_color_acc_left.set_max_count(self.interval["left"]**2)
           self.LED_Driver.multi_color_acc_right.set_max_count(self.interval["right"]**2)
+
+          self.video.hdmi_in.pixel_pack.bits_per_pixel = 32

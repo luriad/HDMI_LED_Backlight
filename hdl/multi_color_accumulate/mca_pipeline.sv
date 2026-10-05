@@ -33,22 +33,18 @@ module mca_pipeline #(
     output logic [TDATA_WIDTH_OUT-1:0] tdata_g,
     output logic tvalid_g,
     output logic tlast_g,
-    input logic tready_g,
 
     output logic [TDATA_WIDTH_OUT-1:0] tdata_r,
     output logic tvalid_r,
     output logic tlast_r,
-    input logic tready_r,
 
     output logic [TDATA_WIDTH_OUT-1:0] tdata_b,
     output logic tvalid_b,
     output logic tlast_b,
-    input logic tready_b,
 
     output logic [DIV_WIDTH_OUT-1:0] tdata_divisor,
     output logic tvalid_divisor,
     output logic tlast_divisor,
-    input logic tready_divisor,
 
     // Register controls
     input logic unsigned [COUNT_WIDTH-1:0] max_count
@@ -63,7 +59,7 @@ logic unsigned [TDATA_WIDTH_OUT-1:0] b_sums [MAX_NUM_COLORS-1:0];
 logic unsigned [COUNT_RAM_WIDTH-1:0] all_color_counts [MAX_NUM_COLORS-1:0];
 
 // RAM init
-typedef enum logic {INIT, IDLE} ram_init_states;
+typedef enum logic [1:0] {INIT, IDLE, CLEAR} ram_init_states;
 ram_init_states sm_vec;
 logic unsigned [INDEX_WIDTH-1:0] init_index;
 logic init_done;
@@ -88,8 +84,8 @@ logic unsigned [TDATA_WIDTH_OUT-1:0] g_add, r_add, b_add;
 logic unsigned [COUNT_WIDTH-1:0] count_incr;
 
 // Assign AXI-S slave side
-assign tready_in = init_done;
-assign valid_0 = tvalid_in & init_done;
+assign tready_in = init_done & ~((last_1 & valid_1) | (last_2 & valid_2));
+assign valid_0 = tvalid_in & init_done & ~((last_1 & valid_1) | (last_2 & valid_2));
 assign last_0 = tlast_in;
 
 assign g_0 = tdata_in[G_START_INDEX+COLOR_WIDTH-1:G_START_INDEX];
@@ -120,7 +116,7 @@ assign r_add = r_sum_1 + r_1;
 assign b_add = b_sum_1 + b_1;
 assign count_incr = count_1 + 1;
 
-// Pipeline stage 1:s Read old sum
+// Pipeline stage 1: Read old sum
 always @(posedge aclk) begin
     if (aresetn == 1'b0) begin
         g_1 <= 'b0;
@@ -137,29 +133,32 @@ always @(posedge aclk) begin
         last_1 <= 'b0;
     end
     else begin
-        g_1 <= g_0;
-        r_1 <= r_0;
-        b_1 <= b_0;
-        index_1 <= index_0;
         valid_1 <= valid_0;
-        last_1 <= last_0;
-        if (valid_1 == 1'b1 && index_0 == index_1) begin
-            g_sum_1 <= g_add;
-            r_sum_1 <= r_add;
-            b_sum_1 <= b_add;
-            count_1 <= count_incr;
-        end 
-        else if (valid_2 == 1'b1 && index_0 == index_2) begin
-            g_sum_1 <= g_sum_2;
-            r_sum_1 <= r_sum_2;
-            b_sum_1 <= b_sum_2;
-            count_1 <= count_2;
-        end 
-        else begin
-            g_sum_1 <= g_sums[index_0];
-            r_sum_1 <= r_sums[index_0];
-            b_sum_1 <= b_sums[index_0];
-            count_1 <= all_color_counts[index_0];
+        if (valid_0 == 1'b1) begin
+            g_1 <= g_0;
+            r_1 <= r_0;
+            b_1 <= b_0;
+            index_1 <= index_0;
+            valid_1 <= valid_0;
+            last_1 <= last_0;
+            if (valid_1 == 1'b1 && index_0 == index_1) begin
+                g_sum_1 <= g_add;
+                r_sum_1 <= r_add;
+                b_sum_1 <= b_add;
+                count_1 <= count_incr;
+            end 
+            else if (valid_2 == 1'b1 && index_0 == index_2) begin
+                g_sum_1 <= g_sum_2;
+                r_sum_1 <= r_sum_2;
+                b_sum_1 <= b_sum_2;
+                count_1 <= count_2;
+            end 
+            else begin
+                g_sum_1 <= g_sums[index_0];
+                r_sum_1 <= r_sums[index_0];
+                b_sum_1 <= b_sums[index_0];
+                count_1 <= all_color_counts[index_0];
+            end
         end
     end
 end
@@ -178,15 +177,15 @@ always @(posedge aclk) begin
         last_2 <= 'b0;
     end
     else begin
-        index_2 <= index_1;
-
-        g_sum_2 <= g_add;
-        r_sum_2 <= r_add;
-        b_sum_2 <= b_add;
-        count_2 <= count_incr;
-
         valid_2 <= valid_1;
-        last_2 <= last_1;
+        if (valid_1 == 1'b1) begin
+            index_2 <= index_1;
+            g_sum_2 <= g_add;
+            r_sum_2 <= r_add;
+            b_sum_2 <= b_add;
+            count_2 <= count_incr;
+            last_2 <= last_1;
+        end
     end
 end
 
@@ -200,11 +199,16 @@ always @(posedge aclk) begin
         last_3 <= 'b0;
     end
     else begin
-        g_sum_3 <= g_sum_2;
-        r_sum_3 <= r_sum_2;
-        b_sum_3 <= b_sum_2;
-        valid_3 <= valid_2 == 1'b1 && ((count_2 == max_count) || (last_2 == 1'b1));
-        last_3 <= last_2;
+        if (valid_2 == 1'b1 && ((count_2 == max_count) || (last_2 == 1'b1))) begin
+            valid_3 <= 1'b1;
+            g_sum_3 <= g_sum_2;
+            r_sum_3 <= r_sum_2;
+            b_sum_3 <= b_sum_2;
+            last_3 <= last_2;
+        end
+        else begin
+            valid_3 <= 1'b0;
+        end
     end
 end
 
@@ -223,7 +227,19 @@ always @(posedge aclk) begin
                     sm_vec <= INIT;
                 end
             IDLE:
-                sm_vec <= IDLE;
+                if (last_2 == 1'b1 && valid_2 == 1'b1) begin
+                    sm_vec <= CLEAR;
+                end
+                else begin
+                    sm_vec <= IDLE;
+                end
+            CLEAR:
+                if (init_index == MAX_NUM_COLORS-1) begin
+                    sm_vec <= IDLE;
+                end
+                else begin
+                    sm_vec <= CLEAR;
+                end
             default: 
                 sm_vec <= INIT;
         endcase
@@ -244,7 +260,15 @@ always @(posedge aclk) begin
                     init_done <= init_index == MAX_NUM_COLORS-1;
                 end
             IDLE:
-                init_done <= 1'b1;
+                begin
+                    init_done <= ~(last_2 & valid_2);
+                    init_index <= 0;
+                end
+            CLEAR:
+                begin
+                    init_index <= init_index + 1;
+                    init_done <= init_index == max_count-1;
+                end
         endcase
     end
 end
@@ -297,18 +321,10 @@ always @(posedge aclk) begin
             last_4 <= last_3;
         end
         else begin
-            if (valid_4_g == 1'b1 && tready_g == 1'b1) begin
-                valid_4_g <= 1'b0;
-            end
-            if (valid_4_r == 1'b1 && tready_r == 1'b1) begin
-                valid_4_r <= 1'b0;
-            end
-            if (valid_4_b == 1'b1 && tready_b == 1'b1) begin
-                valid_4_b <= 1'b0;
-            end
-            if (valid_4_div == 1'b1 && tready_divisor == 1'b1) begin
-                valid_4_div <= 1'b0;
-            end
+            valid_4_g <= 1'b0;
+            valid_4_r <= 1'b0;
+            valid_4_b <= 1'b0;
+            valid_4_div <= 1'b0;
         end
     end
 end
