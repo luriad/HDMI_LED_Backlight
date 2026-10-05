@@ -1126,8 +1126,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_right_b, and set properties
   set axis_subset_converter_right_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_right_b ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_right_b
 
@@ -1135,8 +1135,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_right_r, and set properties
   set axis_subset_converter_right_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_right_r ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_right_r
 
@@ -1144,8 +1144,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_right_g, and set properties
   set axis_subset_converter_right_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_right_g ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_right_g
 
@@ -1153,8 +1153,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_top_b, and set properties
   set axis_subset_converter_top_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_top_b ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_top_b
 
@@ -1162,8 +1162,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_top_g, and set properties
   set axis_subset_converter_top_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_top_g ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_top_g
 
@@ -1171,8 +1171,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_top_r, and set properties
   set axis_subset_converter_top_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_top_r ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_top_r
 
@@ -1180,8 +1180,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_bottom_b, and set properties
   set axis_subset_converter_bottom_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_bottom_b ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_bottom_b
 
@@ -1189,8 +1189,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_bottom_g, and set properties
   set axis_subset_converter_bottom_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_bottom_g ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_bottom_g
 
@@ -1198,8 +1198,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_bottom_r, and set properties
   set axis_subset_converter_bottom_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_bottom_r ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_bottom_r
 
@@ -1207,8 +1207,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_left_g, and set properties
   set axis_subset_converter_left_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_left_g ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_left_g
 
@@ -1216,8 +1216,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_left_r, and set properties
   set axis_subset_converter_left_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_left_r ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_left_r
 
@@ -1225,8 +1225,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_left_b, and set properties
   set axis_subset_converter_left_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_left_b ]
   set_property -dict [list \
-    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_left_b
 
@@ -1243,18 +1243,14 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   connect_bd_intf_net -intf_net axi_interconnect_0_M07_AXI [get_bd_intf_pins axi_interconnect_0/M07_AXI] [get_bd_intf_pins multi_color_acc_left/S00_AXI]
   connect_bd_intf_net -intf_net axi_interconnect_0_M08_AXI [get_bd_intf_pins axi_interconnect_0/M08_AXI] [get_bd_intf_pins multi_color_acc_right/S00_AXI]
   connect_bd_intf_net -intf_net axis_combiner_0_M_AXIS [get_bd_intf_pins axis_combiner_top/M_AXIS] [get_bd_intf_pins axis_to_ws2812c_top/S_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_combiner_0_M_AXIS]
   connect_bd_intf_net -intf_net axis_combiner_1_M_AXIS [get_bd_intf_pins axis_combiner_bottom/M_AXIS] [get_bd_intf_pins axis_to_ws2812c_bottom/S_AXIS]
   connect_bd_intf_net -intf_net axis_combiner_2_M_AXIS [get_bd_intf_pins axis_combiner_left/M_AXIS] [get_bd_intf_pins axis_to_ws2812c_left/S_AXIS]
   connect_bd_intf_net -intf_net axis_combiner_3_M_AXIS [get_bd_intf_pins axis_combiner_right/M_AXIS] [get_bd_intf_pins axis_to_ws2812c_right/S_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_0_M_AXIS [get_bd_intf_pins axis_data_fifo_top_b/M_AXIS] [get_bd_intf_pins axis_combiner_top/S00_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_data_fifo_0_M_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_10_M_AXIS [get_bd_intf_pins axis_data_fifo_left_b/M_AXIS] [get_bd_intf_pins axis_combiner_left/S00_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_11_M_AXIS [get_bd_intf_pins axis_data_fifo_left_r/M_AXIS] [get_bd_intf_pins axis_combiner_left/S01_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_1_M_AXIS [get_bd_intf_pins axis_data_fifo_top_g/M_AXIS] [get_bd_intf_pins axis_combiner_top/S02_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_data_fifo_1_M_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_2_M_AXIS [get_bd_intf_pins axis_data_fifo_top_r/M_AXIS] [get_bd_intf_pins axis_combiner_top/S01_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_data_fifo_2_M_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_3_M_AXIS [get_bd_intf_pins axis_data_fifo_right_g/M_AXIS] [get_bd_intf_pins axis_combiner_right/S02_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_4_M_AXIS [get_bd_intf_pins axis_data_fifo_right_b/M_AXIS] [get_bd_intf_pins axis_combiner_right/S00_AXIS]
   connect_bd_intf_net -intf_net axis_data_fifo_5_M_AXIS [get_bd_intf_pins axis_data_fifo_right_r/M_AXIS] [get_bd_intf_pins axis_combiner_right/S01_AXIS]
@@ -1269,25 +1265,20 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   connect_bd_intf_net -intf_net axis_subset_converter_1_M_AXIS [get_bd_intf_pins axis_subset_converter_right_r/M_AXIS] [get_bd_intf_pins axis_data_fifo_right_r/S_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_2_M_AXIS [get_bd_intf_pins axis_subset_converter_right_g/M_AXIS] [get_bd_intf_pins axis_data_fifo_right_g/S_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_3_M_AXIS [get_bd_intf_pins axis_subset_converter_top_b/M_AXIS] [get_bd_intf_pins axis_data_fifo_top_b/S_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_subset_converter_3_M_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_4_M_AXIS [get_bd_intf_pins axis_subset_converter_top_g/M_AXIS] [get_bd_intf_pins axis_data_fifo_top_g/S_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_subset_converter_4_M_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_5_M_AXIS [get_bd_intf_pins axis_subset_converter_top_r/M_AXIS] [get_bd_intf_pins axis_data_fifo_top_r/S_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets axis_subset_converter_5_M_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_6_M_AXIS [get_bd_intf_pins axis_subset_converter_bottom_b/M_AXIS] [get_bd_intf_pins axis_data_fifo_bottom_b/S_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_7_M_AXIS [get_bd_intf_pins axis_subset_converter_bottom_g/M_AXIS] [get_bd_intf_pins axis_data_fifo_bottom_g/S_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_8_M_AXIS [get_bd_intf_pins axis_subset_converter_bottom_r/M_AXIS] [get_bd_intf_pins axis_data_fifo_bottom_r/S_AXIS]
   connect_bd_intf_net -intf_net axis_subset_converter_9_M_AXIS [get_bd_intf_pins axis_subset_converter_left_g/M_AXIS] [get_bd_intf_pins axis_data_fifo_left_g/S_AXIS]
   connect_bd_intf_net -intf_net color_indexer_bottom_axis_out [get_bd_intf_pins color_indexer_bottom/axis_out] [get_bd_intf_pins multi_color_acc_bottom/S_AXIS_IN]
   connect_bd_intf_net -intf_net color_indexer_top_axis_out [get_bd_intf_pins color_indexer_top/axis_out] [get_bd_intf_pins multi_color_acc_top/S_AXIS_IN]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets color_indexer_top_axis_out]
   connect_bd_intf_net -intf_net color_indexer_vert_left_axis_out [get_bd_intf_pins color_indexer_vert_left/axis_out] [get_bd_intf_pins multi_color_acc_left/S_AXIS_IN]
   connect_bd_intf_net -intf_net color_indexer_vert_right_axis_out [get_bd_intf_pins color_indexer_vert_right/axis_out] [get_bd_intf_pins multi_color_acc_right/S_AXIS_IN]
   connect_bd_intf_net -intf_net color_router_0_axis_out_bottom [get_bd_intf_pins color_router_0/axis_out_bottom] [get_bd_intf_pins color_indexer_bottom/axis_in]
   connect_bd_intf_net -intf_net color_router_0_axis_out_left [get_bd_intf_pins color_router_0/axis_out_left] [get_bd_intf_pins color_indexer_vert_left/axis_in]
   connect_bd_intf_net -intf_net color_router_0_axis_out_right [get_bd_intf_pins color_router_0/axis_out_right] [get_bd_intf_pins color_indexer_vert_right/axis_in]
   connect_bd_intf_net -intf_net color_router_0_axis_out_top [get_bd_intf_pins color_router_0/axis_out_top] [get_bd_intf_pins color_indexer_top/axis_in]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets color_router_0_axis_out_top]
   connect_bd_intf_net -intf_net div_gen_bottom_b_M_AXIS_DOUT [get_bd_intf_pins div_gen_bottom_b/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_bottom_b/S_AXIS]
   connect_bd_intf_net -intf_net div_gen_bottom_g_M_AXIS_DOUT [get_bd_intf_pins div_gen_bottom_g/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_bottom_g/S_AXIS]
   connect_bd_intf_net -intf_net div_gen_bottom_r_M_AXIS_DOUT [get_bd_intf_pins div_gen_bottom_r/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_bottom_r/S_AXIS]
@@ -1298,23 +1289,14 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   connect_bd_intf_net -intf_net div_gen_right_g_M_AXIS_DOUT [get_bd_intf_pins div_gen_right_g/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_right_g/S_AXIS]
   connect_bd_intf_net -intf_net div_gen_right_r_M_AXIS_DOUT [get_bd_intf_pins div_gen_right_r/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_right_r/S_AXIS]
   connect_bd_intf_net -intf_net div_gen_top_b_M_AXIS_DOUT [get_bd_intf_pins div_gen_top_b/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_top_b/S_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets div_gen_top_b_M_AXIS_DOUT]
   connect_bd_intf_net -intf_net div_gen_top_g_M_AXIS_DOUT [get_bd_intf_pins div_gen_top_g/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_top_g/S_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets div_gen_top_g_M_AXIS_DOUT]
   connect_bd_intf_net -intf_net div_gen_top_r_M_AXIS_DOUT [get_bd_intf_pins div_gen_top_r/M_AXIS_DOUT] [get_bd_intf_pins axis_subset_converter_top_r/S_AXIS]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets div_gen_top_r_M_AXIS_DOUT]
   connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_B [get_bd_intf_pins multi_color_acc_top/M_AXIS_B] [get_bd_intf_pins div_gen_top_b/S_AXIS_DIVIDEND]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets multi_color_accumula_0_M_AXIS_B]
   connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_DIV_B [get_bd_intf_pins multi_color_acc_top/M_AXIS_DIV_B] [get_bd_intf_pins div_gen_top_b/S_AXIS_DIVISOR]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets multi_color_accumula_0_M_AXIS_DIV_B]
   connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_DIV_R [get_bd_intf_pins multi_color_acc_top/M_AXIS_DIV_R] [get_bd_intf_pins div_gen_top_r/S_AXIS_DIVISOR]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets multi_color_accumula_0_M_AXIS_DIV_R]
   connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_G [get_bd_intf_pins multi_color_acc_top/M_AXIS_G] [get_bd_intf_pins div_gen_top_g/S_AXIS_DIVIDEND]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets multi_color_accumula_0_M_AXIS_G]
   connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXIS_R [get_bd_intf_pins multi_color_acc_top/M_AXIS_R] [get_bd_intf_pins div_gen_top_r/S_AXIS_DIVIDEND]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets multi_color_accumula_0_M_AXIS_R]
   connect_bd_intf_net -intf_net multi_color_accumula_0_M_AXS_DIV_G [get_bd_intf_pins multi_color_acc_top/M_AXS_DIV_G] [get_bd_intf_pins div_gen_top_g/S_AXIS_DIVISOR]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_intf_nets multi_color_accumula_0_M_AXS_DIV_G]
   connect_bd_intf_net -intf_net multi_color_accumula_1_M_AXIS_B [get_bd_intf_pins multi_color_acc_bottom/M_AXIS_B] [get_bd_intf_pins div_gen_bottom_b/S_AXIS_DIVIDEND]
   connect_bd_intf_net -intf_net multi_color_accumula_1_M_AXIS_DIV_B [get_bd_intf_pins multi_color_acc_bottom/M_AXIS_DIV_B] [get_bd_intf_pins div_gen_bottom_b/S_AXIS_DIVISOR]
   connect_bd_intf_net -intf_net multi_color_accumula_1_M_AXIS_DIV_R [get_bd_intf_pins multi_color_acc_bottom/M_AXIS_DIV_R] [get_bd_intf_pins div_gen_bottom_r/S_AXIS_DIVISOR]
@@ -1338,11 +1320,8 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   connect_bd_net -net ACLK_2 [get_bd_pins ACLK_100M] [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/S00_ACLK]
   connect_bd_net -net ARESETN_2 [get_bd_pins ARESETN_100M] [get_bd_pins axi_interconnect_0/ARESETN] [get_bd_pins axi_interconnect_0/S00_ARESETN]
   connect_bd_net -net aclk_1 [get_bd_pins aclk_142M] [get_bd_pins axi_interconnect_0/M00_ACLK] [get_bd_pins axi_interconnect_0/M01_ACLK] [get_bd_pins axi_interconnect_0/M02_ACLK] [get_bd_pins axi_interconnect_0/M03_ACLK] [get_bd_pins axi_interconnect_0/M04_ACLK] [get_bd_pins axi_interconnect_0/M05_ACLK] [get_bd_pins axi_interconnect_0/M06_ACLK] [get_bd_pins axi_interconnect_0/M07_ACLK] [get_bd_pins axi_interconnect_0/M08_ACLK] [get_bd_pins color_indexer_top/ap_clk] [get_bd_pins color_indexer_vert_left/ap_clk] [get_bd_pins color_indexer_vert_right/ap_clk] [get_bd_pins color_indexer_bottom/ap_clk] [get_bd_pins div_gen_top_b/aclk] [get_bd_pins div_gen_top_r/aclk] [get_bd_pins div_gen_top_g/aclk] [get_bd_pins div_gen_right_g/aclk] [get_bd_pins div_gen_right_b/aclk] [get_bd_pins div_gen_right_r/aclk] [get_bd_pins div_gen_left_g/aclk] [get_bd_pins div_gen_left_b/aclk] [get_bd_pins div_gen_left_r/aclk] [get_bd_pins div_gen_bottom_g/aclk] [get_bd_pins div_gen_bottom_r/aclk] [get_bd_pins div_gen_bottom_b/aclk] [get_bd_pins axis_combiner_bottom/aclk] [get_bd_pins axis_combiner_left/aclk] [get_bd_pins axis_combiner_right/aclk] [get_bd_pins axis_combiner_top/aclk] [get_bd_pins axis_to_ws2812c_top/aclk] [get_bd_pins axis_to_ws2812c_left/aclk] [get_bd_pins axis_to_ws2812c_bottom/aclk] [get_bd_pins axis_to_ws2812c_right/aclk] [get_bd_pins axis_data_fifo_top_b/s_axis_aclk] [get_bd_pins axis_data_fifo_left_b/s_axis_aclk] [get_bd_pins axis_data_fifo_left_g/s_axis_aclk] [get_bd_pins axis_data_fifo_left_r/s_axis_aclk] [get_bd_pins axis_data_fifo_right_b/s_axis_aclk] [get_bd_pins axis_data_fifo_right_r/s_axis_aclk] [get_bd_pins axis_data_fifo_right_g/s_axis_aclk] [get_bd_pins axis_data_fifo_bottom_b/s_axis_aclk] [get_bd_pins axis_data_fifo_bottom_r/s_axis_aclk] [get_bd_pins axis_data_fifo_bottom_g/s_axis_aclk] [get_bd_pins axis_data_fifo_top_g/s_axis_aclk] [get_bd_pins axis_data_fifo_top_r/s_axis_aclk] [get_bd_pins axis_subset_converter_right_b/aclk] [get_bd_pins axis_subset_converter_right_r/aclk] [get_bd_pins axis_subset_converter_right_g/aclk] [get_bd_pins axis_subset_converter_top_b/aclk] [get_bd_pins axis_subset_converter_top_g/aclk] [get_bd_pins axis_subset_converter_top_r/aclk] [get_bd_pins axis_subset_converter_bottom_b/aclk] [get_bd_pins axis_subset_converter_bottom_g/aclk] [get_bd_pins axis_subset_converter_bottom_r/aclk] [get_bd_pins axis_subset_converter_left_g/aclk] [get_bd_pins axis_subset_converter_left_r/aclk] [get_bd_pins axis_subset_converter_left_b/aclk] [get_bd_pins multi_color_acc_bottom/s00_axi_aclk] [get_bd_pins multi_color_acc_bottom/axis_aclk] [get_bd_pins multi_color_acc_left/s00_axi_aclk] [get_bd_pins multi_color_acc_left/axis_aclk] [get_bd_pins multi_color_acc_right/s00_axi_aclk] [get_bd_pins multi_color_acc_right/axis_aclk] [get_bd_pins multi_color_acc_top/s00_axi_aclk] [get_bd_pins multi_color_acc_top/axis_aclk] [get_bd_pins color_router_0/ap_clk]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_nets aclk_1]
   connect_bd_net -net aresetn_1 [get_bd_pins periph_aresetn_142M] [get_bd_pins color_indexer_vert_left/ap_rst_n] [get_bd_pins color_indexer_top/ap_rst_n] [get_bd_pins color_indexer_bottom/ap_rst_n] [get_bd_pins color_indexer_vert_right/ap_rst_n] [get_bd_pins div_gen_top_g/aresetn] [get_bd_pins div_gen_top_b/aresetn] [get_bd_pins div_gen_top_r/aresetn] [get_bd_pins div_gen_left_g/aresetn] [get_bd_pins div_gen_left_r/aresetn] [get_bd_pins div_gen_left_b/aresetn] [get_bd_pins div_gen_bottom_g/aresetn] [get_bd_pins div_gen_bottom_r/aresetn] [get_bd_pins div_gen_bottom_b/aresetn] [get_bd_pins div_gen_right_g/aresetn] [get_bd_pins div_gen_right_b/aresetn] [get_bd_pins div_gen_right_r/aresetn] [get_bd_pins axis_combiner_right/aresetn] [get_bd_pins axis_combiner_bottom/aresetn] [get_bd_pins axis_combiner_top/aresetn] [get_bd_pins axis_combiner_left/aresetn] [get_bd_pins axis_to_ws2812c_top/aresetn] [get_bd_pins axis_to_ws2812c_left/aresetn] [get_bd_pins axis_to_ws2812c_bottom/aresetn] [get_bd_pins axis_to_ws2812c_right/aresetn] [get_bd_pins axis_data_fifo_top_b/s_axis_aresetn] [get_bd_pins axis_data_fifo_left_b/s_axis_aresetn] [get_bd_pins axis_data_fifo_left_g/s_axis_aresetn] [get_bd_pins axis_data_fifo_left_r/s_axis_aresetn] [get_bd_pins axis_data_fifo_right_b/s_axis_aresetn] [get_bd_pins axis_data_fifo_right_r/s_axis_aresetn] [get_bd_pins axis_data_fifo_right_g/s_axis_aresetn] [get_bd_pins axis_data_fifo_bottom_b/s_axis_aresetn] [get_bd_pins axis_data_fifo_bottom_r/s_axis_aresetn] [get_bd_pins axis_data_fifo_bottom_g/s_axis_aresetn] [get_bd_pins axis_data_fifo_top_g/s_axis_aresetn] [get_bd_pins axis_data_fifo_top_r/s_axis_aresetn] [get_bd_pins axis_subset_converter_right_b/aresetn] [get_bd_pins axis_subset_converter_right_r/aresetn] [get_bd_pins axis_subset_converter_right_g/aresetn] [get_bd_pins axis_subset_converter_top_b/aresetn] [get_bd_pins axis_subset_converter_top_g/aresetn] [get_bd_pins axis_subset_converter_top_r/aresetn] [get_bd_pins axis_subset_converter_bottom_b/aresetn] [get_bd_pins axis_subset_converter_bottom_g/aresetn] [get_bd_pins axis_subset_converter_bottom_r/aresetn] [get_bd_pins axis_subset_converter_left_g/aresetn] [get_bd_pins axis_subset_converter_left_r/aresetn] [get_bd_pins axis_subset_converter_left_b/aresetn] [get_bd_pins multi_color_acc_bottom/s00_axi_aresetn] [get_bd_pins multi_color_acc_bottom/axis_aresetn] [get_bd_pins multi_color_acc_left/s00_axi_aresetn] [get_bd_pins multi_color_acc_left/axis_aresetn] [get_bd_pins multi_color_acc_right/s00_axi_aresetn] [get_bd_pins multi_color_acc_right/axis_aresetn] [get_bd_pins multi_color_acc_top/s00_axi_aresetn] [get_bd_pins multi_color_acc_top/axis_aresetn] [get_bd_pins color_router_0/ap_rst_n]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_nets aresetn_1]
   connect_bd_net -net axis_to_ws2812c_0_Dout [get_bd_pins axis_to_ws2812c_top/Dout] [get_bd_pins WS2812C_Dout_top]
-  set_property HDL_ATTRIBUTE.DEBUG {true} [get_bd_nets axis_to_ws2812c_0_Dout]
   connect_bd_net -net axis_to_ws2812c_1_Dout [get_bd_pins axis_to_ws2812c_left/Dout] [get_bd_pins WS2812C_Dout_left]
   connect_bd_net -net axis_to_ws2812c_2_Dout [get_bd_pins axis_to_ws2812c_bottom/Dout] [get_bd_pins WS2812C_Dout_bottom]
   connect_bd_net -net axis_to_ws2812c_3_Dout [get_bd_pins axis_to_ws2812c_right/Dout] [get_bd_pins WS2812C_Dout_right]
