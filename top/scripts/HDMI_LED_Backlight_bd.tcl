@@ -1126,6 +1126,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_right_b, and set properties
   set axis_subset_converter_right_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_right_b ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_right_b
@@ -1134,6 +1135,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_right_r, and set properties
   set axis_subset_converter_right_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_right_r ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_right_r
@@ -1142,6 +1144,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_right_g, and set properties
   set axis_subset_converter_right_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_right_g ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_right_g
@@ -1150,6 +1153,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_top_b, and set properties
   set axis_subset_converter_top_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_top_b ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_top_b
@@ -1158,6 +1162,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_top_g, and set properties
   set axis_subset_converter_top_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_top_g ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_top_g
@@ -1166,6 +1171,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_top_r, and set properties
   set axis_subset_converter_top_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_top_r ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_top_r
@@ -1174,6 +1180,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_bottom_b, and set properties
   set axis_subset_converter_bottom_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_bottom_b ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_bottom_b
@@ -1182,6 +1189,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_bottom_g, and set properties
   set axis_subset_converter_bottom_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_bottom_g ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_bottom_g
@@ -1190,6 +1198,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_bottom_r, and set properties
   set axis_subset_converter_bottom_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_bottom_r ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_bottom_r
@@ -1198,6 +1207,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_left_g, and set properties
   set axis_subset_converter_left_g [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_left_g ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_left_g
@@ -1206,6 +1216,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_left_r, and set properties
   set axis_subset_converter_left_r [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_left_r ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_left_r
@@ -1214,6 +1225,7 @@ proc create_hier_cell_LED_Driver { parentCell nameHier } {
   # Create instance: axis_subset_converter_left_b, and set properties
   set axis_subset_converter_left_b [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_subset_converter:1.1 axis_subset_converter_left_b ]
   set_property -dict [list \
+    CONFIG.S_TDATA_NUM_BYTES {5} \
     CONFIG.M_TDATA_NUM_BYTES {1} \
     CONFIG.TDATA_REMAP {tdata[23:16]} \
   ] $axis_subset_converter_left_b
