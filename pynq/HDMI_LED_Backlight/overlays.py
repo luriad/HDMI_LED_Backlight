@@ -65,6 +65,12 @@ class BacklightOverlay(pynq.Overlay):
                     raise ValueError(f"Wrong side name: {key}")
                self.num_ws_leds[key] = value
 
+     def configure_hdmi():
+          self.video.hdmi_in.configure()
+          self.video.hdmi_in.pixel_pack.bits_per_pixel = 32
+          res = [self.video.hdmi_in.mode.width, self.video.hdmi_in.mode.height]
+          self.set_resolution(res)
+
      def calc_bounds(self):
           for key, num_leds in self.num_ws_leds.items():
                interval = 0
@@ -105,5 +111,3 @@ class BacklightOverlay(pynq.Overlay):
           self.LED_Driver.multi_color_acc_bottom.set_max_count(self.interval["bottom"]**2)
           self.LED_Driver.multi_color_acc_left.set_max_count(self.interval["left"]**2)
           self.LED_Driver.multi_color_acc_right.set_max_count(self.interval["right"]**2)
-
-          self.video.hdmi_in.pixel_pack.bits_per_pixel = 32
