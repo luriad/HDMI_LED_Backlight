@@ -37,6 +37,9 @@ class color_router(DefaultIP):
         self.register_map.settings_right_bounds_y_lower = self.bounds["right"][1][0]
         self.register_map.settings_right_bounds_y_upper = self.bounds["right"][1][1]
 
+    def enable_color_out(self, enable):
+        self.register_map.settings_enable = enable
+
 class color_indexer(DefaultIP):
     bindto = ['xilinx.com:HDMI_LED_Backlight:color_indexer_horiz:1.0', 'xilinx.com:HDMI_LED_Backlight:color_indexer_vert:1.0']
     def __init__(self, description):

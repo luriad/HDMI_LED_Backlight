@@ -8,18 +8,22 @@ def init_hlb(args):
     hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit')
 
 def update_settings(args):
-    overlay = hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit', dowload=False)
-    overlay.configure_hdmi()
+    overlay = hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit', download=False)
     num_leds = {"top":args.top_leds, "bottom":args.bottom_leds, "left":args.left_leds, "right":args.right_leds};
     overlay.set_num_ws_leds(num_leds)
+    overlay.configure_hdmi()
     overlay.calc_bounds()
 
-def loopback(args):
+def enable_leds(args):
+    overlay = hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit', download=False)
+    overlay.enable_led_output(args.enable)
+
+def enable_passthrough(args):
     overlay = hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit', download=False)
     if (args.enable):
         hdmi_in = overlay.video.hdmi_in
         hdmi_out = overlay.video.hdmi_out
-        hdmi_in.configure()
+        overlay.configure_hdmi()
         hdmi_out.configure(hdmi_in.mode)
         hdmi_in.start()
         hdmi_out.start()
@@ -46,13 +50,22 @@ def _hlbt_parser():
                        help="the number of LEDs in the left string")
     settings.add_argument("-r", "--right-leds", type=int, required=True,
                        help="the number of LEDs in the top string")
+
+    enable = subparsers.add_parser("output", help="control LED output")
+    enable.set_defaults(func=enable_leds)
+    enable_group = enable.add_mutually_exclusive_group()
+    enable_group.add_argument("-e", "--enable", action="store_true", 
+                       help="enables LED output")
+    enable_group.add_argument("-d", "--disable", action="store_true", 
+                       help="disables LED output")
     
-    enable = subparsers.add_parser("loopback", help="enable the HDMI to LED pipeline")
-    enable.set_defaults(func=loopback)
-    enable.add_argument("-e", "--enable", action="store_true", 
-                       help="enables HDMI loopback")
-    enable.add_argument("-d", "--disable", action="store_true", 
-                       help="disables HDMI loopback")
+    passthrough = subparsers.add_parser("passthrough", help="enable HDMI passthrough")
+    passthrough.set_defaults(func=enable_passthrough)
+    passthrough_enable_group = passthrough.add_mutually_exclusive_group()
+    passthrough_enable_group.add_argument("-e", "--enable", action="store_true", 
+                       help="enables HDMI passthrough")
+    passthrough_enable_group.add_argument("-d", "--disable", action="store_true", 
+                       help="disables HDMI passthrough")
     return parser
 
 def main():

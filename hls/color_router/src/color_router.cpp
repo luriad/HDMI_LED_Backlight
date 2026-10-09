@@ -30,11 +30,15 @@ hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out) {
 }
 
 void route(color c, xy_coordinates coord, xy_bounds bounds, bool last,
-hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out, hls::stream<bool>& last_out) {
+hls::stream<color>& color_out, hls::stream<xy_coordinates>& coordinates_out, hls::stream<bool>& last_out, bool enable) {
     #pragma HLS INLINE
     if (coord.x >= bounds.x.lower && coord.x <= bounds.x.upper
     && coord.y >= bounds.y.lower && coord.y <= bounds.y.upper) {
-        color_out.write(c);
+        if (enable) {
+            color_out.write(c);
+        } else {
+            color_out.write(0);
+        }
         coordinates_out.write(coord);
         last_out.write(last);
     }
@@ -53,10 +57,10 @@ color_streams_dir& color_out, coord_streams_dir& coordinates_out, last_streams_d
     bool last_left = (coord.x == settings.left_bounds.x.upper) && (coord.y == settings.left_bounds.y.upper);
     bool last_right = (coord.x == settings.right_bounds.x.upper) && (coord.y == settings.right_bounds.y.upper);
 
-    route(c, coord, settings.top_bounds, last_top, color_out.top, coordinates_out.top, last_out.top);
-    route(c, coord, settings.bottom_bounds, last_bottom, color_out.bottom, coordinates_out.bottom, last_out.bottom);
-    route(c, coord, settings.left_bounds, last_left, color_out.left, coordinates_out.left, last_out.left);
-    route(c, coord, settings.right_bounds, last_right, color_out.right, coordinates_out.right, last_out.right);
+    route(c, coord, settings.top_bounds, last_top, color_out.top, coordinates_out.top, last_out.top, settings.enable);
+    route(c, coord, settings.bottom_bounds, last_bottom, color_out.bottom, coordinates_out.bottom, last_out.bottom, settings.enable);
+    route(c, coord, settings.left_bounds, last_left, color_out.left, coordinates_out.left, last_out.left, settings.enable);
+    route(c, coord, settings.right_bounds, last_right, color_out.right, coordinates_out.right, last_out.right, settings.enable);
 }
 
 void depackage_axis(hls::stream<wide_color_axis>& axis_in, 
@@ -125,6 +129,7 @@ reg_settings& settings) {
     #pragma HLS INTERFACE mode=s_axilite port=settings.right_bounds.x.lower
     #pragma HLS INTERFACE mode=s_axilite port=settings.right_bounds.y.upper
     #pragma HLS INTERFACE mode=s_axilite port=settings.right_bounds.y.lower
+    #pragma HLS INTERFACE mode=s_axilite port=settings.enable
 
     hls::stream<color> color_in, color_coord_to_router;
     hls::stream<xy_coordinates> coord_coord_to_router;
