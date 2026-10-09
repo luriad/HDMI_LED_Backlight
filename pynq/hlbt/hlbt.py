@@ -20,9 +20,9 @@ def enable_leds(args):
 
 def enable_passthrough(args):
     overlay = hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit', download=False)
+    hdmi_in = overlay.video.hdmi_in
+    hdmi_out = overlay.video.hdmi_out
     if (args.enable):
-        hdmi_in = overlay.video.hdmi_in
-        hdmi_out = overlay.video.hdmi_out
         overlay.configure_hdmi()
         hdmi_out.configure(hdmi_in.mode)
         hdmi_in.start()
