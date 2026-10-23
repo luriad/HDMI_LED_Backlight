@@ -37,8 +37,8 @@ def _hlbt_parser():
     parser = argparse.ArgumentParser(description="HDMI LED Backlight Tool")
     subparsers = parser.add_subparsers(required=True)
 
-    settings = subparsers.add_parser("init", help="initialize the LED driver overlay")
-    settings.set_defaults(func=init_hlb)
+    init = subparsers.add_parser("init", help="initialize the LED driver overlay")
+    init.set_defaults(func=init_hlb)
                        
     settings = subparsers.add_parser("update-settings", help="update LED driver settings")
     settings.set_defaults(func=update_settings)
