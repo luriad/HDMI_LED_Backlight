@@ -1,14 +1,20 @@
 import serial
+from time import sleep
 
 def connect(port):
     ser = serial.Serial(port)
     ser.baudrate = 115200
-    ser.write(b'sudo su\n')
-    ser.write(b'xilinx\n')
     return ser
 
-def disconnect(ser):
+def login(ser):
+    ser.write(b'sudo su\n')
+    ser.write(b'xilinx\n')
+    sleep(5)
+
+def logout(ser):
     ser.write(b'exit\n')
+
+def disconnect(ser):
     ser.close()
 
 def init(ser):
