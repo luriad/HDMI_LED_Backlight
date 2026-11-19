@@ -22,6 +22,7 @@ while (True):
 
     elif cmd == "init":
         d.init(ser)
+        d.load_settings(ser)
 
     elif cmd == "update-settings":
         print("top: ", end='')

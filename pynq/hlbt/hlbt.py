@@ -3,16 +3,28 @@ import os
 import shutil
 import sys
 import HDMI_LED_Backlight as hlb
+import json
 
 def init_hlb(args):
     hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit')
 
-def update_settings(args):
+def update_settings_overlay(num_leds):
     overlay = hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit', download=False)
-    num_leds = {"top":args.top_leds, "bottom":args.bottom_leds, "left":args.left_leds, "right":args.right_leds};
     overlay.set_num_ws_leds(num_leds)
     overlay.configure_hdmi()
     overlay.calc_bounds()
+
+def update_settings(args):
+    num_leds = {"top":args.top_leds, "bottom":args.bottom_leds, "left":args.left_leds, "right":args.right_leds};
+    update_settings_overlay(num_leds)
+    if (args.filename != ""):
+        with open(args.filename, 'w') as f:
+            json.dump(num_leds, f)
+
+def load_settings(args):
+    with open(args.filename, "r") as file:
+        num_leds = json.load(file)
+        update_settings_overlay(num_leds)
 
 def enable_leds(args):
     overlay = hlb.overlays.BacklightOverlay('HDMI_LED_Backlight.bit', download=False)
@@ -50,6 +62,13 @@ def _hlbt_parser():
                        help="the number of LEDs in the left string")
     settings.add_argument("-r", "--right-leds", type=int, required=True,
                        help="the number of LEDs in the top string")
+    settings.add_argument("-f", "--filename", type=str, required=False,
+                       help="output settings to JSON file")
+
+    load= subparsers.add_parser("load-settings", help="load LED driver settings from a JSON file")
+    load.set_defaults(func=load_settings)
+    load.add_argument("-f", "--filename", type=str, required=True,
+                        help="input settings JSON file")
 
     enable = subparsers.add_parser("output", help="control LED output")
     enable.set_defaults(func=enable_leds)
