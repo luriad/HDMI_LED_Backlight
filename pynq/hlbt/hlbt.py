@@ -17,7 +17,7 @@ def update_settings_overlay(num_leds):
 def update_settings(args):
     num_leds = {"top":args.top_leds, "bottom":args.bottom_leds, "left":args.left_leds, "right":args.right_leds};
     update_settings_overlay(num_leds)
-    if (args.filename != ""):
+    if (args.filename is not None):
         with open(args.filename, 'w') as f:
             json.dump(num_leds, f)
 
