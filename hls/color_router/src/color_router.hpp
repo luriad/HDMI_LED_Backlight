@@ -11,6 +11,7 @@ struct reg_settings {
     xy_bounds left_bounds;
     xy_bounds right_bounds;
     bool enable;
+    bool zero_out;
 };
 
 void color_router(hls::stream<wide_color_axis>& axis_in, axis_streams_dir& axis_out, reg_settings& settings);

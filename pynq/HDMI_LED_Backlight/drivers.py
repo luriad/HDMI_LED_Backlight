@@ -1,4 +1,5 @@
 from pynq import DefaultIP
+from time import sleep
 
 class color_router(DefaultIP):
     bindto = ['xilinx.com:HDMI_LED_Backlight:color_router:1.0']
@@ -38,7 +39,13 @@ class color_router(DefaultIP):
         self.register_map.settings_right_bounds_y_upper = self.bounds["right"][1][1]
 
     def enable_color_out(self, enable):
-        self.register_map.settings_enable = enable
+        if (enable):
+            self.register_map.settings_enable = True
+        else:
+            self.register_map.settings_zero_out = True
+            sleep(1)
+            self.register_map.settings_enable = False
+            self.register_map.settings_zero_out = False
 
 class color_indexer(DefaultIP):
     bindto = ['xilinx.com:HDMI_LED_Backlight:color_indexer_horiz:1.0', 'xilinx.com:HDMI_LED_Backlight:color_indexer_vert:1.0']
