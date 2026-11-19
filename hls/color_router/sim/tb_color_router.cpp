@@ -71,5 +71,6 @@ int main() {
     settings.right_bounds.y.upper = 5;
     settings.right_bounds.y.lower = 2;
     settings.enable = true;
+    settings.zero_out = false;
     tb_color_router_driver(num_frames, settings, resolution);
 }
