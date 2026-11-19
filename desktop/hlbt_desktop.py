@@ -3,11 +3,6 @@ from time import sleep
 
 settings_filename = "/home/xilinx/.hlbt/settings.json"
 
-def connect(port):
-    ser = serial.Serial(port)
-    ser.baudrate = 115200
-    return ser
-
 def login(ser):
     ser.write(b'sudo su\n')
     ser.write(b'xilinx\n')
@@ -16,7 +11,14 @@ def login(ser):
 def logout(ser):
     ser.write(b'exit\n')
 
+def connect(port):
+    ser = serial.Serial(port)
+    ser.baudrate = 115200
+    login(ser)
+    return ser
+
 def disconnect(ser):
+    logout(ser)
     ser.close()
 
 def init(ser):

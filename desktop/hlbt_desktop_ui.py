@@ -14,10 +14,8 @@ while (True):
         print("port: ", end='')
         port = input()
         ser = d.connect(port)
-        d.login(ser)
 
     elif cmd == "disconnect":
-        d.logout(ser)
         d.disconnect(ser)
 
     elif cmd == "init":

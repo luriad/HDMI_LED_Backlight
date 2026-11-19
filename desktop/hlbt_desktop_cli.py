@@ -7,7 +7,6 @@ import serial
 
 def init_hlb(args):
     ser = d.connect(args.port)
-    d.login(ser)
     d.init(ser)
     d.load_settings(ser)
     d.disconnect(ser)
